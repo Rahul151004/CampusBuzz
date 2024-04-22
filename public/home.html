@@ -289,7 +289,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="/login">
+                    <form method="post" action="netlify/functions/login">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label class="form-control-placeholder" for="email">Email</label>
@@ -427,7 +427,7 @@
     });
     // Function to fetch and display popular reviews
 function fetchPopularReviews() {
-    $.get('/popular-reviews', function(data) {
+    $.get('/netlify/functions/popular-reviews', function(data) {
         data.forEach(review => {
             const reviewHTML = `
                 <div class="review-container">
@@ -493,7 +493,7 @@ function fetchPopularReviews() {
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/login", formData)
+        $.post("netlify/functions/login", formData)
             .done(function(data) {
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
