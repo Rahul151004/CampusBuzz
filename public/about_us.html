@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - CampusBuzz</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333; /* Dark text color */
+            background-color: #f3f4f6; /* Light gray background */
+        }
+
+        header {
+            position: relative;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Add subtle shadow */
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #333; /* Dark gray text */
+        }
+
+        .navbar-nav .nav-link {
+            color: #333; /* Dark gray text */
+        }
+
+        input.form-control {
+            padding: 14px 20px;
+            border-radius: 30px;
+        }
+
+        footer {
+            background-color: #038fae; /* Blueish footer color */
+            color: #fff; /* White text color */
+            text-align: center;
+            padding: 1em 0;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            margin-top: -1px; /* Adjust margin to remove the gap */
+        }
+
+        h1, p {
+            color: #fff; /* White text color */
+        }
+
+        /* Login Modal Styles */
+        .modal-content {
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+        }
+
+        .modal-header {
+            border-bottom: none;
+            background-color: #038fae;
+            color: #fff;
+            border-radius: 20px 20px 0px 0px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+        }
+
+        .close {
+            color: #fff;
+            opacity: 1;
+            font-size: 30px;
+        }
+
+        .close:hover {
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .btn-login {
+            border-radius: 20px;
+            padding: 10px 20px;
+            background-color: #038fae;
+            border: none;
+            color: #fff;
+        }
+
+        .btn-login:hover {
+            background-color: #057193;
+            color: #fff;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-control {
+            border-radius: 30px;
+            padding: 14px 20px;
+        }
+
+        .form-control-placeholder {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 20px;
+            pointer-events: none;
+            transition: top 0.3s, font-size 0.3s;
+        }
+
+        .form-control:focus + .form-control-placeholder,
+        .form-control:valid + .form-control-placeholder {
+            top: 10px;
+            font-size: 12px;
+        }
+
+        input#email.form-control, input#password.form-control, input#username.form-control, input#signupPassword.form-control, input#confirmPassword.form-control, input#signupEmail.form-control {
+            margin-bottom: 20px;
+            padding: 20px 20px;
+        }
+
+        /* Center the avatar image */
+        .modal-body .avatar-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Avatar image style */
+        .avatar-container img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            border: 3px solid #038fae; /* Border color */
+            padding: 3px; /* Space between the border and the image */
+        }
+
+        /* Adjust text color for links */
+        .modal-body .signup-login-text {
+            color: #333; /* Dark gray text */
+        }
+
+        /* Background for the first part */
+        #journey {
+            background-color: #fff;
+            padding: 40px 0 80px 0;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('Images/bb.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .journey-container {
+            padding: 20px 40px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+
+        .journey-container p{
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Team Section */
+        #team {
+            padding: 80px 0;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('Images/bb.jpg');
+            background-size: cover;
+            background-position: top;
+            background-repeat: no-repeat;
+        }
+
+        .team-container {
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+
+        .profile-picture-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* Adjust margin as needed */
+        }
+
+        .profile-picture-container img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            border: 5px solid #038fae;
+        }
+
+        .team-member h5 , h6{
+            color: #038fae;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .team-member p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Contact Us Section */
+        #contact {
+            padding: 80px 0;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('Images/bb.jpg');
+            background-size: cover;
+            background-position: top;
+            background-repeat: no-repeat;
+        }
+
+        #contactForm {
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+            padding: 40px;
+            background-color: #fff;
+        }
+
+        #contactForm label {
+            font-weight: bold;
+            color: #038fae;
+        }
+
+        #contactForm .form-control {
+            margin-bottom: 20px;
+        }
+
+        #contactForm button {
+            border-radius: 20px;
+            padding: 10px 20px;
+            background-color: #038fae;
+            border: none;
+            color: #fff;
+        }
+
+        #contactForm button:hover {
+            background-color: #057193;
+        }
+
+        .custom-bg-color {
+            background-color: #038fae;
+        }
+
+
+        /* End of Contact Us Section */
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">CampusBuzz</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto"> <!-- Changed to ml-auto to push navbar elements to the right -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="facilities.html">Facilities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reviews.html">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about_us.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                    </li>
+                </ul>
+                <!-- Search bar -->
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Main Content -->
+<section id="journey">
+    <div class="journey">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-xlg-8 offset-xlg-2 journey-container">
+                    <h2 class="mb-4 text-center">Our Journey: From Idea to Reality</h2>
+                    <p>Welcome to CampusBuzz! Ever wondered why some of the best food spots and hangout places on campus aren't listed on Google Maps or anywhere else? Well, that's where our story begins.</p>
+                    <p>You see, the idea for CampusBuzz didn't just pop out of thin air. It came from a real-world problem that many of us face every day. Picture this: there I was, with a bunch of hidden gems in mind – amazing food courts and stalls that I knew like the back of my hand. But to my surprise, none of my friends had a clue about these spots! Why? Because they simply weren't on the map, literally.</p>
+                    <p>So, I found myself at a crossroads. I needed a project idea, something meaningful and impactful. And that's when it hit me – why not create a platform where everyone can discover and review these fantastic campus facilities and eateries?</p>
+                    <p>Sure, I could have gone for something easy, a run-of-the-mill project. But where's the fun in that, right? Instead, I decided to dive headfirst into a challenge that hit close to home. And thus, the journey of CampusBuzz began.</p>
+                    <p>From that lightbulb moment to building the website you're on right now, it's been quite the ride. Along the way, we've faced our fair share of hurdles and roadblocks. But with every obstacle, we've grown, adapted, and come out stronger.</p>
+                    <p>As we continue on this journey, our mission remains the same - to connect students and campus enthusiasts with the best spots on campus. And we're not stopping until every hidden gem gets the spotlight it deserves.</p>
+                    <p>So, whether you're here to discover new hangouts, share your favorite spots, or simply connect with fellow campus-goers, welcome aboard! CampusBuzz is more than just a website – it's a community, a hub for all things campus life.</p>
+                    <p>Join us as we explore, discover, and share our campus stories. Together, let's make CampusBuzz the go-to destination for all things campus!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Team Members Section -->
+<section id="team" class="mt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 team-container">
+                <h2 class="text-center mb-4">Our Team</h2>
+                <div class="row">
+                    <!-- Team Member Card -->
+                    <div class="col-lg-12 mb-4 team-member">
+                        <!-- Profile Picture -->
+                        <div class="profile-picture-container">
+                        <img src="Images/pic of me.gif" class="card-img-top" alt="Rahul Bhat">
+                        </div>
+                        <div class="card-body">
+                            <!-- Name and Role -->
+                            <h5 class="card-title text-center">Rahul Bhat</h5>
+                            <h6 class="card-text text-center">Founder and Developer</h6>
+                            <!-- Bio -->
+                            <p class="card-text">Hi there! I'm Rahul Bhat, a passionate 2nd-year B.Tech CSE student at LPU with a flair for innovation and a drive to make a difference. My journey with CampusBuzz began from a simple observation – there were countless hidden gems of food courts and stalls within our campus that went unnoticed by many, including my friends. Determined to change that, I embarked on a mission to create a platform where students and visitors could discover, share, and explore the vibrant culinary scene right here on campus.</p>
+
+                            <p class="card-text">With CampusBuzz, my vision is to bridge the gap between students and the diverse range of facilities available on campus. From food courts serving mouthwatering delicacies to cozy cafes perfect for studying, I'm dedicated to providing a platform where everyone can find their favorite spots and share their experiences.</p>
+
+                            <p class="card-text">Beyond CampusBuzz, I'm a curious learner with a passion for technology and a knack for problem-solving. When I'm not busy coding or designing, you'll find me exploring new cuisines, tinkering with gadgets, or diving into a good book.</p>
+
+                            <p class="card-text">As we journey ahead, I'm excited to see CampusBuzz grow and evolve, connecting students, fostering community, and enriching campus life. Join me as we explore the vibrant world of campus facilities together!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Contact Us Section -->
+<section id="contact" class="mt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <form id="contactForm" method="post" action="/contact">
+                    <h2 class="text-center mb-4">Contact Us</h2>
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login to CampusBuzz</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loginForm">
+                    <!-- Avatar image for login form -->
+                    <div class="avatar-container">
+                        <img src="Images/img_avatar2.png" alt="Avatar">
+                    </div>
+                    <form method="post" action="/login">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label class="form-control-placeholder" for="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <label class="form-control-placeholder" for="password">Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-login btn-block">Login</button>
+                    </form>
+                    <p class="text-center mt-3 signup-login-text">Don't have an account? <a href="#" id="signupLink">Sign up here</a></p>
+                </div>
+                <div id="signupForm" style="display: none;">
+                    <!-- Avatar image for signup form -->
+                    <div class="avatar-container">
+                        <img src="Images/img_avatar2.png" alt="Avatar">
+                    </div>
+                    <form method="post" action="/signup">
+                        <!-- Add signup form fields here -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" name="username" required>
+                            <label class="form-control-placeholder" for="username">Username</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="signupEmail" name="email" required>
+                            <label class="form-control-placeholder" for="signupEmail">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="signupPassword" name="password" required>
+                            <label class="form-control-placeholder" for="signupPassword">Password</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            <label class="form-control-placeholder" for="confirmPassword">Confirm Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-login btn-block">Sign Up</button>
+                    </form>
+                    <p class="text-center mt-3 signup-login-text">Already have an account? <a href="#" id="loginLink">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Login Success Modal -->
+<div class="modal fade" id="loginSuccessModal" tabindex="-1" role="dialog" aria-labelledby="loginSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginSuccessModalLabel">Login Successful</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Success message for login -->
+                <p style="color: black;">You have successfully logged in.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Error Modal -->
+<div class="modal fade" id="loginErrorModal" tabindex="-1" role="dialog" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginErrorModalLabel">Login Failed</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Error message for login -->
+                <p style="color: black;">Login failed. Please check your email and password and try again.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Signup Success Modal -->
+<div class="modal fade" id="signupSuccessModal" tabindex="-1" role="dialog" aria-labelledby="signupSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupSuccessModalLabel">Signup Successful</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Success message for signup -->
+                <p style="color: black;">You have successfully signed up.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Signup Error Modal -->
+<div class="modal fade" id="signupErrorModal" tabindex="-1" role="dialog" aria-labelledby="signupErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupErrorModalLabel">Signup Failed</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Error message for signup -->
+                <p id="errortext" style="color: black;">Signup failed. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Success Modal -->
+<div class="modal fade" id="contactSuccessModal" tabindex="-1" role="dialog" aria-labelledby="contactSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactSuccessModalLabel">Thank You!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: black;">Your message has been sent successfully.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Error Modal -->
+<div class="modal fade" id="contactErrorModal" tabindex="-1" role="dialog" aria-labelledby="contactErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactErrorModalLabel">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: black;">There was an error sending your message. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <p>&copy; 2024 CampusBuzz. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Script to toggle between login and signup forms -->
+<script>
+    $(document).ready(function(){
+    // Show Signup Form
+    $("#signupLink").click(function(){
+        $("#loginForm").hide();
+        $("#signupForm").show();
+        $("#loginModalLabel").text("Sign Up to CampusBuzz");
+    });
+
+    // Show Login Form
+    $("#loginLink").click(function(){
+        $("#signupForm").hide();
+        $("#loginForm").show();
+        $("#loginModalLabel").text("Login to CampusBuzz");
+    });
+
+    // Handle Login Form Submission
+    $("#loginForm").submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        // Get form data
+        var formData = {
+            email: $("#email").val(),
+            password: $("#password").val()
+        };
+        // Send login request to server
+        $.post("/login", formData)
+            .done(function(data) {
+                // Show login success modal
+                $("#loginSuccessModal").modal("show");
+                // Hide the modal after 5 seconds
+                setTimeout(function() {
+                    $("#loginSuccessModal").modal("hide");
+                    $("#loginModal").modal("hide");
+                    document.getElementById("signupForm").reset();
+                }, 5000);
+            })
+            .fail(function() {
+                // Show login error modal
+                $("#loginErrorModal").modal("show");
+                // Hide the modal after 5 seconds
+                setTimeout(function() {
+                    $("#loginErrorModal").modal("hide");
+                }, 5000);
+            });
+    });
+
+    // Handle Signup Form Submission
+    $("#signupForm").submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get form data
+    var formData = {
+        username: $("#username").val(),
+        email: $("#signupEmail").val(),
+        password: $("#signupPassword").val(),
+        confirmPassword: $("#confirmPassword").val()
+    };
+
+    // Validate password
+    var password = $("#signupPassword").val();
+    var confirmPassword = $("#confirmPassword").val();
+    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    
+    if (!passwordRegex.test(password)) {
+        // Show password requirements modal
+        $("#signupErrorModal").modal("show");
+        $("#errortext").text("Password must be 8 characters long and must contain an uppercase and lowercase character, a digit and a special character");
+        return; // Exit the function
+    }
+
+    if (password !== confirmPassword) {
+        // Show confirm password mismatch modal
+        $("#signupErrorModal").modal("show");
+        $("#errortext").text("Passwords do not match");
+        return; // Exit the function
+    }
+
+    // Send signup request to server
+    $.post("/signup", formData)
+        .done(function(data) {
+            // Show signup success modal
+            $("#signupSuccessModal").modal("show");
+            // Hide the modal after 5 seconds
+            setTimeout(function() {
+                $("#signupSuccessModal").modal("hide");
+                $("#loginModal").modal("hide");
+                document.getElementById("signupForm").reset();
+            }, 5000);
+        })
+        .fail(function() {
+            // Show signup error modal
+            $("#signupErrorModal").modal("show");
+            $("#errortext").text("Email already exists! Please select a different email.");
+            // Hide the modal after 5 seconds
+            setTimeout(function() {
+                $("#signupErrorModal").modal("hide");
+            }, 5000);
+        });
+    });
+    // Hide Forms When Modal is Closed
+    $('#loginModal').on('hidden.bs.modal', function () {
+        $("#signupForm").hide();
+        $("#loginForm").show();
+        $("#loginModalLabel").text("Login to CampusBuzz");
+    });
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Submit contact form
+        $('#contactForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Serialize form data
+            var formData = $(this).serialize();
+
+            // Send POST request to submit contact form
+            $.post("/contact", formData)
+                .done(function() {
+                    // Show success modal
+                    $("#contactSuccessModal").modal("show");
+                })
+                .fail(function() {
+                    // Show error modal
+                    $("#contactErrorModal").modal("show");
+                });
+        });
+    });
+</script>
+
+</body>
+</html>
