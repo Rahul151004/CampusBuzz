@@ -7,9 +7,3 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/:splat"
-
-[[functions]]
-  name = "reviewsbyfilter"
-  timeout = 30 # Timeout in seconds
-
-
