@@ -480,7 +480,7 @@
     });
     // Function to fetch and display popular reviews
 function fetchPopularReviews() {
-    $.get('netlify/functions/popular-reviews', function(data) {
+    $.get('/.netlify/functions/popular-reviews', function(data) {
         data.forEach(review => {
             const reviewHTML = `
                 <div class="review-container">
@@ -633,7 +633,7 @@ function fetchPopularReviews() {
     $(document).ready(function() {
         // Function to fetch reviews based on filter and update UI
         function fetchReviews(filter) {
-            $.get(`/review/${filter}`, function(data) {
+            $.get(`/.netlify/functions/review/${filter}`, function(data) {
                 $('#reviews-container').html(data);
             });
         }
