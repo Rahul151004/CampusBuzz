@@ -1,6 +1,5 @@
 [build]
   functions = "netlify/functions"
-  command = "npm run build"  # Or whatever your build command is
   publish = "public"         # Or the directory where your frontend files are
 
 [[redirects]]
