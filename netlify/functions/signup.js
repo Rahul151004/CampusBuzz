@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
-const serverless=require('serverless-http');
+const serverless = require('serverless-http');
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -19,7 +20,8 @@ client.connect(err => {
 const db = client.db('project');
 const usersCollection = db.collection('users');
 
-app.post('/signup', async (req, res) => {
+// Handler function for signup
+const signupHandler = async (req, res) => {
     const { username, email, password, confirmPassword } = req.body;
     if (password !== confirmPassword) {
         res.status(400).send('Passwords do not match');
@@ -32,6 +34,10 @@ app.post('/signup', async (req, res) => {
             res.sendStatus(500);
         }
     }
-});
+};
+
+// Route for signup
+app.post('/signup', signupHandler);
+
+// Wrap the app with serverless handler
 module.exports.handler = serverless(app);
-module.exports = app;
