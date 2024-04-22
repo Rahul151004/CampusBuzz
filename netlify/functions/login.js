@@ -1,5 +1,6 @@
 // Import necessary modules
 const { MongoClient } = require('mongodb');
+const queryString = require('querystring');
 
 // Connection URI for MongoDB
 const uri = process.env.MONGODB_URI;
@@ -8,11 +9,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 // Handler function to handle the login request
 exports.handler = async (event, context) => {
     try {
-        // Log the event body for debugging
-        console.log('Event body:', event.body);
-
         // Parse the request body
-        const requestBody = JSON.parse(event.body);
+        const requestBody = queryString.parse(event.body);
         const { email, password } = requestBody;
 
         // Connect to MongoDB
