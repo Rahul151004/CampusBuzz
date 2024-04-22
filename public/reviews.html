@@ -480,7 +480,7 @@
     });
     // Function to fetch and display popular reviews
 function fetchPopularReviews() {
-    $.get('/popular-reviews', function(data) {
+    $.get('netlify/functions/popular-reviews', function(data) {
         data.forEach(review => {
             const reviewHTML = `
                 <div class="review-container">
