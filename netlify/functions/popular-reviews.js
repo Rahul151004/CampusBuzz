@@ -12,12 +12,18 @@ exports.handler = async (event, context) => {
         console.log(reviews);
         return {
             statusCode: 200,
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(reviews),
         };
     } catch (error) {
         console.error('Error:', error);
         return {
             statusCode: 500,
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({ error: 'Internal server error' }),
         };
     } finally {
