@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Coffee Day</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Add custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333; /* Dark text color */
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        
+        header {
+            position: relative;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Add subtle shadow */
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: #333; /* Dark gray text */
+        }
+        
+        .navbar-nav .nav-link {
+            color: #333; /* Dark gray text */
+        }
+        
+        footer {
+            background-color: #038fae; /* Blueish footer color */
+            color: #fff; /* White text color */
+            text-align: center;
+            padding: 1em 0;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            margin-top: -1px; /* Adjust margin to remove the gap */
+        }
+
+        /* Additional custom styles specific to food court page */
+        .food-shop-info {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .food-shop-info h1 {
+            color: #333;
+        }
+
+        .food-shop-info p {
+            color: #666;
+        }
+
+        .food-shop-images {
+            margin-top: 20px;
+            text-align: center; /* Center images */
+        }
+
+        .food-shop-images img {
+            max-width: 90%;
+            margin: auto; /* Center images */
+            margin-top: 20px; /* Added margin top */
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .mini-navbar {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 10px;
+            display: table;
+            justify-content: center;
+            margin: auto;
+        }
+
+        .mini-navbar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .mini-navbar ul li:last-child{
+            margin-right: 0;
+        }
+
+        .mini-navbar ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .mini-navbar ul li a:hover {
+            background-color: #e9ecef;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-pane {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .review-container {
+            margin-bottom: 20px;
+        }
+
+        .review {
+            padding: 20px;
+            background-color: #f9f9f9; /* Light gray background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .review p {
+            margin-bottom: 10px;
+        }
+
+        /* Add margin-top to the h1 tag */
+        h1.food-shop-heading {
+            margin-top: 24px;
+            margin-bottom: 20px;
+        }
+
+        div.food-shop-info{
+            padding-top: 20px;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+
+        /* Login Modal Styles */
+        .modal-content {
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+        }
+
+        .modal-header {
+            border-bottom: none;
+            background-color: #038fae;
+            color: #fff;
+            border-radius: 20px 20px 0px 0px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+        }
+
+        .close {
+            color: #fff;
+            opacity: 1;
+            font-size: 30px;
+        }
+
+        .close:hover {
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .btn-login {
+            border-radius: 20px;
+            padding: 10px 20px;
+            background-color: #038fae;
+            border: none;
+            color: #fff;
+        }
+
+        .btn-login:hover {
+            background-color: #057193;
+            color: #fff;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-control {
+            border-radius: 30px;
+            padding: 14px 20px;
+        }
+
+        .form-control-placeholder {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 20px;
+            pointer-events: none;
+            transition: top 0.3s, font-size 0.3s;
+        }
+
+        .form-control:focus + .form-control-placeholder,
+        .form-control:valid + .form-control-placeholder {
+            top: 10px;
+            font-size: 12px;
+        }
+
+        input#email.form-control, input#password.form-control, input#username.form-control, input#signupPassword.form-control, input#confirmPassword.form-control, input#signupEmail.form-control {
+            margin-bottom: 20px;
+            padding: 20px 20px;
+        }
+
+        /* Center the avatar image */
+        .modal-body .avatar-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Avatar image style */
+        .avatar-container img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            border: 3px solid #038fae; /* Border color */
+            padding: 3px; /* Space between the border and the image */
+        }
+
+        /* Adjust text color for links */
+        .modal-body .signup-login-text {
+            color: #333; /* Dark gray text */
+        }
+
+        /* Review button container */
+        .review-button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* Adjust margin as needed */
+        }
+
+        /* Review button styles */
+        #write-review-btn {
+            background-color: #007bff; /* Button background color */
+            color: #fff; /* Button text color */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #write-review-btn:hover {
+            background-color: #0056b3; /* Button background color on hover */
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="../index.html">CampusBuzz</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../home.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../facilities.html">Facilities</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../reviews.html">Reviews</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../about_us.html">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                        </li>
+                    </ul>
+                    <!-- Search bar -->
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1 class="text-center mb-4 food-shop-heading">Café Coffee Day</h1>
+        
+        <div class="food-shop-images">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="../Images/ccd.jpg" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="../Images/ccd2.jpg" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="../Images/ccd1.jpg" alt="Third slide">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="mini-navbar">
+            <ul>
+                <li><a href="#overview" class="tab-link active" onclick="openTab(event, 'overview')">Overview</a></li>
+                <li><a href="#reviews" class="tab-link" onclick="openTab(event,'reviews')">Reviews</a></li>
+                <li><a href="#about" class="tab-link" onclick="openTab(event,'about')">About Us</a></li>
+            </ul>
+        </div>
+
+        <div id="overview" class="tab-content tab-pane active">
+            <div class="food-shop-info">
+                <h2>Overview</h2>
+                <p><strong>Location:</strong> Inside Unimall, Ground Floor</p>
+                <p><strong>Hours:</strong> Mon - Fri: 11am - 7pm, Sat - Sun: 10am - 6pm</p>
+                <p><strong>Description:</strong> Café Coffee Day is located at Lovely Professional University (LPU) in Phagwara, Punjab, at Block 15A, National Highway 1, GT Road. The cafe is vegetarian, moderately expensive, and offers organic dishes. It also has free Wi-Fi. Some say the coffee is amazing and the place is nice.</p>
+            </div>
+        </div>
+
+        <div id="reviews" class="tab-content tab-pane">
+            <div id="reviews-container" class="food-shop-info">
+                <h2>Reviews</h2>
+                <div class="review-container"></div>
+            </div>
+        </div>
+
+        <div id="about" class="tab-content tab-pane">
+            <div class="food-shop-info">
+                <h2>About Us</h2>
+                <p>Café Coffee Day is located at Lovely Professional University (LPU) in Phagwara, Punjab, at Block 15A, National Highway 1, GT Road. The cafe is vegetarian, moderately expensive, and offers organic dishes. It also has free Wi-Fi. Some say the coffee is amazing and the place is nice.</p>
+            </div>
+        </div>
+    </div>
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Write a Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/submit-reviews/2" id="review-form">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" name="title" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">Rating:</label>
+                        <input type="number" class="form-control" name="rating" id="rating" min="1" max="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="review">Your Review:</label>
+                        <textarea class="form-control" id="review" name="reviewtxt" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login to CampusBuzz</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loginForm">
+                    <!-- Avatar image for login form -->
+                    <div class="avatar-container">
+                        <img src="../Images/img_avatar2.png" alt="Avatar">
+                    </div>
+                    <form method="post" action="/login">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label class="form-control-placeholder" for="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <label class="form-control-placeholder" for="password">Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-login btn-block">Login</button>
+                    </form>
+                    <p class="text-center mt-3 signup-login-text">Don't have an account? <a href="#" id="signupLink">Sign up here</a></p>
+                </div>
+                <div id="signupForm" style="display: none;">
+                    <!-- Avatar image for signup form -->
+                    <div class="avatar-container">
+                        <img src="../Images/img_avatar2.png" alt="Avatar">
+                    </div>
+                    <form method="post" action="/signup">
+                        <!-- Add signup form fields here -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" name="username" required>
+                            <label class="form-control-placeholder" for="username">Username</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="signupEmail" name="email" required>
+                            <label class="form-control-placeholder" for="signupEmail">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="signupPassword" name="password" required>
+                            <label class="form-control-placeholder" for="signupPassword">Password</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            <label class="form-control-placeholder" for="confirmPassword">Confirm Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-login btn-block">Sign Up</button>
+                    </form>
+                    <p class="text-center mt-3 signup-login-text">Already have an account? <a href="#" id="loginLink">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Review Success Modal -->
+<div class="modal fade" id="reviewSuccessModal" tabindex="-1" role="dialog" aria-labelledby="reviewSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewSuccessModalLabel">Review Submitted</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Your review has been submitted successfully. Thank you!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Review Error Modal -->
+<div class="modal fade" id="reviewErrorModal" tabindex="-1" role="dialog" aria-labelledby="reviewErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewErrorModalLabel">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>There was an error submitting your review. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Success Modal -->
+<div class="modal fade" id="loginSuccessModal" tabindex="-1" role="dialog" aria-labelledby="loginSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginSuccessModalLabel">Login Successful</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Success message for login -->
+                <p style="color: black;">You have successfully logged in.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Error Modal -->
+<div class="modal fade" id="loginErrorModal" tabindex="-1" role="dialog" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginErrorModalLabel">Login Failed</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Error message for login -->
+                <p style="color: black;">Login failed. Please check your email and password and try again.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Signup Success Modal -->
+<div class="modal fade" id="signupSuccessModal" tabindex="-1" role="dialog" aria-labelledby="signupSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupSuccessModalLabel">Signup Successful</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Success message for signup -->
+                <p style="color: black;">You have successfully signed up.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Signup Error Modal -->
+<div class="modal fade" id="signupErrorModal" tabindex="-1" role="dialog" aria-labelledby="signupErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupErrorModalLabel">Signup Failed</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Error message for signup -->
+                <p id="errortext" style="color: black;">Signup failed. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 CampusBuzz. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        // Open Overview tab by default
+        document.getElementById("overview").style.display = "block";
+    </script>
+
+<!-- Script to toggle between login and signup forms -->
+<script>
+    $(document).ready(function(){
+    // Show Signup Form
+    $("#signupLink").click(function(){
+        $("#loginForm").hide();
+        $("#signupForm").show();
+        $("#loginModalLabel").text("Sign Up to CampusBuzz");
+    });
+
+    // Show Login Form
+    $("#loginLink").click(function(){
+        $("#signupForm").hide();
+        $("#loginForm").show();
+        $("#loginModalLabel").text("Login to CampusBuzz");
+    });
+
+    // Handle Login Form Submission
+    $("#loginForm").submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        // Get form data
+        var formData = {
+            email: $("#email").val(),
+            password: $("#password").val()
+        };
+        // Send login request to server
+        $.post("/login", formData)
+            .done(function(data) {
+                // Show login success modal
+                $("#loginSuccessModal").modal("show");
+                // Hide the modal after 5 seconds
+                setTimeout(function() {
+                    $("#loginSuccessModal").modal("hide");
+                    $("#loginModal").modal("hide");
+                    document.getElementById("signupForm").reset();
+                }, 5000);
+            })
+            .fail(function() {
+                // Show login error modal
+                $("#loginErrorModal").modal("show");
+                // Hide the modal after 5 seconds
+                setTimeout(function() {
+                    $("#loginErrorModal").modal("hide");
+                }, 5000);
+            });
+    });
+
+    // Handle Signup Form Submission
+    $("#signupForm").submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get form data
+    var formData = {
+        username: $("#username").val(),
+        email: $("#signupEmail").val(),
+        password: $("#signupPassword").val(),
+        confirmPassword: $("#confirmPassword").val()
+    };
+
+    // Validate password
+    var password = $("#signupPassword").val();
+    var confirmPassword = $("#confirmPassword").val();
+    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    
+    if (!passwordRegex.test(password)) {
+        // Show password requirements modal
+        $("#signupErrorModal").modal("show");
+        $("#errortext").text("Password must be 8 characters long and must contain an uppercase and lowercase character, a digit and a special character");
+        return; // Exit the function
+    }
+
+    if (password !== confirmPassword) {
+        // Show confirm password mismatch modal
+        $("#signupErrorModal").modal("show");
+        $("#errortext").text("Passwords do not match");
+        return; // Exit the function
+    }
+
+    // Send signup request to server
+    $.post("/signup", formData)
+        .done(function(data) {
+            // Show signup success modal
+            $("#signupSuccessModal").modal("show");
+            // Hide the modal after 5 seconds
+            setTimeout(function() {
+                $("#signupSuccessModal").modal("hide");
+                $("#loginModal").modal("hide");
+                document.getElementById("signupForm").reset();
+            }, 5000);
+        })
+        .fail(function() {
+            // Show signup error modal
+            $("#signupErrorModal").modal("show");
+            $("#errortext").text("Email already exists! Please select a different email.");
+            // Hide the modal after 5 seconds
+            setTimeout(function() {
+                $("#signupErrorModal").modal("hide");
+            }, 5000);
+        });
+    });
+    // Hide Forms When Modal is Closed
+    $('#loginModal').on('hidden.bs.modal', function () {
+        $("#signupForm").hide();
+        $("#loginForm").show();
+        $("#loginModalLabel").text("Login to CampusBuzz");
+    });
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Function to fetch reviews and update HTML
+        function fetchReviews() {
+            $.get('/reviews/2', function(data) {
+                $('#reviews-container').html(data);
+                    openTab(event,'reviews');
+            });
+        }
+
+        // Call the fetchReviews function when the page loads
+        fetchReviews();
+    });
+</script>
+
+<script>
+    // Submit review form
+    $('#review-form').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+    
+        // Serialize form data
+        var formData = $(this).serialize();
+    
+        // Send POST request to submit review
+        $.post("/submit-reviews/2", formData)
+            .done(function() {
+                // Show review success modal
+                $("#reviewSuccessModal").modal("show");
+                setTimeout(function(){
+                    $("#reviewSuccessModal").modal("hide");
+                    $("#reviewModal").modal("hide");
+                    document.getElementById("review-form").reset();
+                },4000);
+            })
+            .fail(function() {
+                // Show review error modal
+                $("#reviewErrorModal").modal("show");
+            });
+    });
+</script>
+
+</body>
+</html>
