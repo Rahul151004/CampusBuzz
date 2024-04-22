@@ -645,12 +645,6 @@ function fetchPopularReviews() {
             var filter = $(this).attr('href').substring(1); // Get the filter from href attribute
             fetchReviews(filter); // Fetch reviews for the selected filter
         });
-
-        // Fetch reviews based on the initial hash in the URL
-        var initialFilter = window.location.hash.substring(1);
-        if (initialFilter) {
-            fetchReviews(initialFilter);
-        }
     });
 </script>
 

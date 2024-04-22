@@ -35,8 +35,9 @@ app.get('/reviewsbyfilter/:filter', async (req, res) => {
             default:
                 return res.status(400).send('Invalid filter');
         }
-
+        console.log(filter);
         const reviews = await query.toArray();
+        console.log(reviews);
         let reviewsHTML = `<div class="parent-reviews"><h2>${filter.charAt(0).toUpperCase() + filter.slice(1)}</h2>`;
         reviews.forEach(review => {
             reviewsHTML += `
