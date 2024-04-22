@@ -3,10 +3,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const { MongoClient } = require('mongodb');
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 // Connection URI for MongoDB
-const uri = '***REMOVED***';
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Connect to MongoDB
