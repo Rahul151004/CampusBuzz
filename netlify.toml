@@ -8,6 +8,8 @@
   status = 200
   to = "/.netlify/functions/:splat"
 
-  [functions]
+[[functions]]
+  name = "reviewsbyfilter"
   timeout = 30 # Timeout in seconds
+
 
