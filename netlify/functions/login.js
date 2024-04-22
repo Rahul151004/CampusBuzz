@@ -1,38 +1,48 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+// Import necessary modules
 const { MongoClient } = require('mongodb');
-const serverless=require('serverless-http');
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
 
+// Connection URI for MongoDB
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-client.connect(err => {
-    if (err) {
-        console.error('Error connecting to MongoDB:', err);
-        return;
-    }
-    console.log('Connected to MongoDB');
-});
-
-const db = client.db('project');
-const usersCollection = db.collection('users');
-
-app.post('/login', async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
+// Handler function to handle the login request
+exports.handler = async (event, context) => {
     try {
+        // Parse the request body
+        const requestBody = JSON.parse(event.body);
+        const { email, password } = requestBody;
+
+        // Connect to MongoDB
+        await client.connect();
+
+        // Get the users collection
+        const usersCollection = client.db('project').collection('users');
+
+        // Find the user with the provided email and password
         const user = await usersCollection.findOne({ email, password });
+
+        // Close the MongoDB connection
+        await client.close();
+
+        // Check if user exists
         if (user) {
-            res.sendStatus(200);
+            // Return success response
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ message: 'Login successful' }),
+            };
         } else {
-            res.sendStatus(401);
+            // Return unauthorized response
+            return {
+                statusCode: 401,
+                body: JSON.stringify({ message: 'Unauthorized' }),
+            };
         }
     } catch (error) {
-        console.error('Error executing query', error);
-        res.sendStatus(500);
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal server error' }),
+        };
     }
-});
-module.exports.handler = serverless(app);
-module.exports = app;
+};
