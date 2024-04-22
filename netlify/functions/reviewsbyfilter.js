@@ -56,6 +56,7 @@ app.get('/reviewsbyfilter/:filter', async (req, res) => {
                 `;
         });
         reviewsHTML += '</div>';
+        console.log(reviewsHTML);
         res.send(reviewsHTML);
     } catch (error) {
         console.error('Error fetching reviews:', error);
