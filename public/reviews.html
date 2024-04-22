@@ -480,7 +480,7 @@
     });
     // Function to fetch and display popular reviews
 function fetchPopularReviews() {
-    $.get('/.netlify/functions/popularreviews', function(data) {
+    $.get('/.netlify/functions/popular-reviews', function(data) {
         data.forEach(review => {
             const reviewHTML = `
                 <div class="review-container">
@@ -546,7 +546,7 @@ function fetchPopularReviews() {
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/login", formData)
+        $.post("/.netilfy/functions/login", formData)
             .done(function(data) {
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
@@ -599,7 +599,7 @@ function fetchPopularReviews() {
     }
 
     // Send signup request to server
-    $.post("/signup", formData)
+    $.post("/.netilfy/functions/signup", formData)
         .done(function(data) {
             // Show signup success modal
             $("#signupSuccessModal").modal("show");
