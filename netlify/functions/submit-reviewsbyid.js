@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
-
+const serverless=require('serverless-http');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -30,5 +30,5 @@ app.post('/submit-reviews/:id', async (req, res) => {
         res.sendStatus(500); // Send status 500 for error
     }
 });
-
+module.exports.handler = serverless(app);
 module.exports = app;

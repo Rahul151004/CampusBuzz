@@ -1,6 +1,6 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
-
+const serverless=require('serverless-http');
 const app = express();
 
 const uri = process.env.MONGODB_URI;
@@ -27,6 +27,6 @@ app.get('/popular-reviews', async (req, res) => {
         res.status(500).json({ error: 'Error fetching popular reviews' });
     }
 });
-
+module.exports.handler = serverless(app);
 module.exports = app;
 p
