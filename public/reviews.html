@@ -633,7 +633,7 @@ function fetchPopularReviews() {
     $(document).ready(function() {
         // Function to fetch reviews based on filter and update UI
         function fetchReviews(filter) {
-            $.get(`/.netlify/functions/reviewsbyfilter/${filter}`+filter, function(data) {
+            $.get(`/.netlify/functions/reviewsbyfilter/${filter}`, function(data) {
                 $('#reviews-container').html(data);
             });
         }

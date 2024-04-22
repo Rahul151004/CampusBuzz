@@ -1,15 +1,10 @@
 const { MongoClient } = require('mongodb');
-const serverless = require('serverless-http');
-
-// Initialize Express app
 const express = require('express');
 const app = express();
 
-// Connection URI for MongoDB
+// MongoDB connection setup
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Connect to MongoDB
+const client = new MongoClient(uri);
 client.connect(err => {
     if (err) {
         console.error('Error connecting to MongoDB:', err);
@@ -18,7 +13,6 @@ client.connect(err => {
     console.log('Connected to MongoDB');
 });
 
-// Get the database and reviews collection
 const db = client.db('project');
 const reviewsCollection = db.collection('reviews');
 
@@ -46,17 +40,16 @@ app.get('/reviewsbyfilter/:filter', async (req, res) => {
         let reviewsHTML = `<div class="parent-reviews"><h2>${filter.charAt(0).toUpperCase() + filter.slice(1)}</h2>`;
         reviews.forEach(review => {
             reviewsHTML += `
-                    <div class="reviews-container">
-                        <div class="review">
-                            <h6>${review.title}</h6>
-                            <p><strong>Rating: ${review.rating}/5</strong></p>
-                            <p>${review.reviewtxt}</p>
-                        </div>
+                <div class="reviews-container">
+                    <div class="review">
+                        <h6>${review.title}</h6>
+                        <p><strong>Rating: ${review.rating}/5</strong></p>
+                        <p>${review.reviewtxt}</p>
                     </div>
-                `;
+                </div>
+            `;
         });
         reviewsHTML += '</div>';
-        console.log(reviewsHTML);
         res.send(reviewsHTML);
     } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -65,5 +58,4 @@ app.get('/reviewsbyfilter/:filter', async (req, res) => {
 });
 
 // Export the Express app
-module.exports.handler = serverless(app);
-module.exports = app;
+module.exports.handler = app;
