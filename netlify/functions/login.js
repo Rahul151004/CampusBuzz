@@ -8,6 +8,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 // Handler function to handle the login request
 exports.handler = async (event, context) => {
     try {
+        // Log the event body for debugging
+        console.log('Event body:', event.body);
+
         // Parse the request body
         const requestBody = JSON.parse(event.body);
         const { email, password } = requestBody;
