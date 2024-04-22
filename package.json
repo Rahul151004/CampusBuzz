@@ -16,5 +16,13 @@
     "express": "^4.19.2",
     "mongodb": "^6.5.0",
     "serverless-http": "^3.2.0"
+  },
+  "netlify": {
+    "functions": {
+      "reviewsbyfilter": {
+        "timeout": 30
+      }
+    }
   }
+
 }
