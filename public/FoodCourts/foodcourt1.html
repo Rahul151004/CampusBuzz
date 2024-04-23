@@ -754,7 +754,7 @@
         var formData = $(this).serialize();
     
         // Send POST request to submit review
-        $.post("/submit-reviews/13", formData)
+        $.post("/.netlify/functions/submit-reviewsbyid/13", formData)
             .done(function() {
                 // Show review success modal
                 $("#reviewSuccessModal").modal("show");
