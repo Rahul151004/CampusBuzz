@@ -617,7 +617,7 @@
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/login", formData)
+        $.post("/.netlify/functions/login", formData)
             .done(function(data) {
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
@@ -670,7 +670,7 @@
     }
 
     // Send signup request to server
-    $.post("/signup", formData)
+    $.post("/.netlify/functions/signup", formData)
         .done(function(data) {
             // Show signup success modal
             $("#signupSuccessModal").modal("show");
@@ -700,126 +700,45 @@
 });
 </script>
 
-<!-- Script to toggle between login and signup forms -->
-<script>
-    $(document).ready(function(){
-    // Show Signup Form
-    $("#signupLink").click(function(){
-        $("#loginForm").hide();
-        $("#signupForm").show();
-        $("#loginModalLabel").text("Sign Up to CampusBuzz");
-    });
-
-    // Show Login Form
-    $("#loginLink").click(function(){
-        $("#signupForm").hide();
-        $("#loginForm").show();
-        $("#loginModalLabel").text("Login to CampusBuzz");
-    });
-
-    // Handle Login Form Submission
-    $("#loginForm").submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Get form data
-        var formData = {
-            email: $("#email").val(),
-            password: $("#password").val()
-        };
-        // Send login request to server
-        $.post("/login", formData)
-            .done(function(data) {
-                // Show login success modal
-                $("#loginSuccessModal").modal("show");
-                // Hide the modal after 5 seconds
-                setTimeout(function() {
-                    $("#loginSuccessModal").modal("hide");
-                    $("#loginModal").modal("hide");
-                }, 5000);
-            })
-            .fail(function() {
-                // Show login error modal
-                $("#loginErrorModal").modal("show");
-                // Hide the modal after 5 seconds
-                setTimeout(function() {
-                    $("#loginErrorModal").modal("hide");
-                }, 5000);
-            });
-    });
-
-    // Handle Signup Form Submission
-    $("#signupForm").submit(function(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    // Get form data
-    var formData = {
-        username: $("#username").val(),
-        email: $("#signupEmail").val(),
-        password: $("#signupPassword").val(),
-        confirmPassword: $("#confirmPassword").val()
-    };
-
-    // Validate password
-    var password = $("#signupPassword").val();
-    var confirmPassword = $("#confirmPassword").val();
-    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-    
-    if (!passwordRegex.test(password)) {
-        // Show password requirements modal
-        $("#signupErrorModal").modal("show");
-        $("#errortext").text("Password must be 8 characters long and must contain an uppercase and lowercase character, a digit and a special character");
-        return; // Exit the function
-    }
-
-    if (password !== confirmPassword) {
-        // Show confirm password mismatch modal
-        $("#signupErrorModal").modal("show");
-        $("#errortext").text("Passwords do not match");
-        return; // Exit the function
-    }
-
-    // Send signup request to server
-    $.post("/signup", formData)
-        .done(function(data) {
-            // Show signup success modal
-            $("#signupSuccessModal").modal("show");
-            // Hide the modal after 5 seconds
-            setTimeout(function() {
-                $("#signupSuccessModal").modal("hide");
-                $("#loginModal").modal("hide");
-            }, 5000);
-        })
-        .fail(function() {
-            // Show signup error modal
-            $("#signupErrorModal").modal("show");
-            $("#errortext").text("Email already exists! Please select a different email.");
-            // Hide the modal after 5 seconds
-            setTimeout(function() {
-                $("#signupErrorModal").modal("hide");
-            }, 5000);
-        });
-    });
-    // Hide Forms When Modal is Closed
-    $('#loginModal').on('hidden.bs.modal', function () {
-        $("#signupForm").hide();
-        $("#loginForm").show();
-        $("#loginModalLabel").text("Login to CampusBuzz");
-    });
-});
-</script>
-
 <script>
     $(document).ready(function() {
-        // Function to fetch reviews and update HTML
-        function fetchReviews() {
-            $.get('/reviews/6', function(data) {
-                $('#reviews-container').html(data);
-                    openTab(event,'reviews');
-            });
-        }
+    // Function to fetch reviews and update HTML
+    function fetchReviews() {
+        $.get('/.netlify/functions/reviewsbyid/6', function(data) {
+            // Generate HTML for reviews
+            let reviewsHTML = `<div class="review-button-container">
+                <h2>Reviews</h2>
+                <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#reviewModal" id="write-review-btn">Write a Review</a>
+                </div>`;
 
-        // Call the fetchReviews function when the page loads
-        fetchReviews();
-    });
+
+            // Iterate over reviews and add to HTML
+            data.forEach(review => {
+                reviewsHTML += `
+                    <div class="review-container">
+                        <div class="review">
+                            <h6>${review.title}</h6>
+                            <p><strong>Rating: ${review.rating}/5</strong></p>
+                            <p>${review.reviewtxt}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Update reviews container with generated HTML
+            $('#reviews-container').html(reviewsHTML);
+
+            // Open reviews tab
+            openTab(event, 'reviews');
+        }).fail(function(xhr, status, error) {
+            console.error('Error fetching reviews:', error);
+            // Handle error
+        });
+    }
+
+    // Call the fetchReviews function when the page loads
+    fetchReviews();
+});
 </script>
 
 <script>
@@ -831,7 +750,7 @@
         var formData = $(this).serialize();
     
         // Send POST request to submit review
-        $.post("/submit-reviews/6", formData)
+        $.post("/.netlify/functions/submit-reviewsbyid/6", formData)
             .done(function() {
                 // Show review success modal
                 $("#reviewSuccessModal").modal("show");
@@ -847,6 +766,7 @@
             });
     });
 </script>
+
 
 </body>
 </html>
