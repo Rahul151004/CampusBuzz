@@ -633,7 +633,7 @@ function fetchPopularReviews() {
     $(document).ready(function() {
     // Function to fetch reviews based on filter and update UI
     function fetchReviews(filter) {
-        $.get(`/.netlify/functions/reviewsbyfilter/${filter}`, function(data) {
+        $.get(`/.netlify/functions/reviews/${filter}`, function(data) {
             // Process the received JSON data and generate HTML markup
             const reviewsHTML = generateReviewsHTML(data);
             $('#reviews-container').html(reviewsHTML);
