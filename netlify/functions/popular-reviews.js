@@ -9,7 +9,6 @@ exports.handler = async (event, context) => {
 
         const reviewsCollection = client.db('project').collection('reviews');
         const reviews = await reviewsCollection.find({}, { projection: { title: 1, reviewtxt: 1, _id: 0 } }).limit(6).toArray();
-        console.log(reviews);
         return {
             statusCode: 200,
             headers: {
