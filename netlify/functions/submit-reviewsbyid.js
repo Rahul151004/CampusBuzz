@@ -10,6 +10,7 @@ exports.handler = async (event, context) => {
         const path = event.path.replace('/.netlify/functions/', ''); // Extract path without prefix
         const id = parseInt(path.split('/').pop()); // Extract id from the path
         const { title, reviewtxt, rating } = requestBody;
+        const timestamp = new Date();
 
         await client.connect();
 
