@@ -673,7 +673,7 @@
             var formData = $(this).serialize();
 
             // Send POST request to submit contact form
-            $.post("/contact", formData)
+            $.post("/.netlify/functions/contactus", formData)
                 .done(function() {
                     // Show success modal
                     $("#contactSuccessModal").modal("show");

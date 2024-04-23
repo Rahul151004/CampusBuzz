@@ -1,33 +1,32 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
-const serverless=require('serverless-http');
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
+const queryString = require('querystring');
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-client.connect(err => {
-    if (err) {
-        console.error('Error connecting to MongoDB:', err);
-        return;
-    }
-    console.log('Connected to MongoDB');
-});
-
-const db = client.db('project');
-const contactCollection = db.collection('contact');
-
-app.post('/contact', async (req, res) => {
-    const { name, email, message } = req.body;
+exports.handler = async (event, context) => {
     try {
+        const requestBody = queryString.parse(event.body);
+        const { name, email, message } = requestBody;
+        
+        await client.connect();
+
+        const db = client.db('project');
+        const contactCollection = db.collection('contact');
+
         await contactCollection.insertOne({ name, email, message });
-        res.sendStatus(200);
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: 'Contact details submitted successfully' }),
+        };
     } catch (error) {
-        console.error('Error executing query', error);
-        res.sendStatus(500);
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal server error' }),
+        };
+    } finally {
+        await client.close();
     }
-});
-module.exports.handler = serverless(app);
-module.exports = app;
+};
