@@ -12,10 +12,12 @@ exports.handler = async (event, context) => {
         const db = client.db('project');
         const reviewsCollection = db.collection('reviews');
 
-        const id = event.pathParameters && event.pathParameters.id; // Check if pathParameters exists
+        // Extract ID from the path
+        const path = event.path.replace('/.netlify/functions/', '');
+        const id = path.split('/').pop(); // Get the last segment of the path as the ID
         
         if (!id) {
-            throw new Error('ID parameter not found in path parameters');
+            throw new Error('ID not found in the path');
         }
 
         const reviews = await reviewsCollection.find({ facility_id: parseInt(id) }).toArray();
