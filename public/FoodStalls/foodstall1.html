@@ -617,7 +617,7 @@
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/login", formData)
+        $.post("/.netlify/functions/login", formData)
             .done(function(data) {
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
@@ -670,7 +670,7 @@
     }
 
     // Send signup request to server
-    $.post("/signup", formData)
+    $.post("/.netlify/functions/signup", formData)
         .done(function(data) {
             // Show signup success modal
             $("#signupSuccessModal").modal("show");
@@ -702,17 +702,43 @@
 
 <script>
     $(document).ready(function() {
-        // Function to fetch reviews and update HTML
-        function fetchReviews() {
-            $.get('/reviews/19', function(data) {
-                $('#reviews-container').html(data);
-                    openTab(event,'reviews');
-            });
-        }
+    // Function to fetch reviews and update HTML
+    function fetchReviews() {
+        $.get('/.netlify/functions/reviewsbyid/19', function(data) {
+            // Generate HTML for reviews
+            let reviewsHTML = `<div class="review-button-container">
+                <h2>Reviews</h2>
+                <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#reviewModal" id="write-review-btn">Write a Review</a>
+                </div>`;
 
-        // Call the fetchReviews function when the page loads
-        fetchReviews();
-    });
+
+            // Iterate over reviews and add to HTML
+            data.forEach(review => {
+                reviewsHTML += `
+                    <div class="review-container">
+                        <div class="review">
+                            <h6>${review.title}</h6>
+                            <p><strong>Rating: ${review.rating}/5</strong></p>
+                            <p>${review.reviewtxt}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Update reviews container with generated HTML
+            $('#reviews-container').html(reviewsHTML);
+
+            // Open reviews tab
+            openTab(event, 'reviews');
+        }).fail(function(xhr, status, error) {
+            console.error('Error fetching reviews:', error);
+            // Handle error
+        });
+    }
+
+    // Call the fetchReviews function when the page loads
+    fetchReviews();
+});
 </script>
 
 <script>
@@ -724,7 +750,7 @@
         var formData = $(this).serialize();
     
         // Send POST request to submit review
-        $.post("/submit-reviews/19", formData)
+        $.post("/.netlify/functions/submit-reviewsbyid/19", formData)
             .done(function() {
                 // Show review success modal
                 $("#reviewSuccessModal").modal("show");
@@ -740,6 +766,7 @@
             });
     });
 </script>
+
 
 </body>
 </html>
