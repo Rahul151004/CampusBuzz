@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
         const db = client.db('project');
         const reviewsCollection = db.collection('reviews');
 
-        await reviewsCollection.insertOne({ facility_id: id, title, timestamp,reviewtxt, rating });
+        await reviewsCollection.insertOne({ facility_id: id, title, timestamp, reviewtxt, rating });
 
         return {
             statusCode: 200,
