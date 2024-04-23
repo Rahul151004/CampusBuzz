@@ -17,7 +17,7 @@ const db = client.db('project');
 const reviewsCollection = db.collection('reviews');
 
 // Route handler to fetch reviews based on filter
-app.get('/reviewsbyfilter/:filter', async (req, res) => {
+app.get('/reviews/:filter', async (req, res) => {
     try {
         const filter = req.params.filter;
         let query;
