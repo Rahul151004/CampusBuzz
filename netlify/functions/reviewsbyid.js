@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
         }
 
         const reviews = await reviewsCollection.find({ facility_id: parseInt(id) }).toArray();
-
+        console.log(reviews);
         return {
             statusCode: 200,
             headers: {
