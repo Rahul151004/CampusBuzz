@@ -10,23 +10,13 @@ exports.handler = async (event, context) => {
         const db = client.db('project');
         const reviewsCollection = db.collection('reviews');
 
-        console.log('Received request with event:', event);
+        const { id } = event.pathParameters; // Parse ID from pathParameters
 
-        // Log the entire event object
-        console.log('Event:', event);
-
-        const pathParameters = event.pathParameters;
-        console.log('Path parameters:', pathParameters);
-
-        if (!pathParameters || !pathParameters.id) {
+        if (!id) {
             throw new Error('ID parameter not found in path parameters');
         }
 
-        const id = parseInt(pathParameters.id);
-        console.log('Parsed ID:', id);
-
-        const reviews = await reviewsCollection.find({ facility_id: id }).toArray();
-        console.log('Retrieved reviews:', reviews);
+        const reviews = await reviewsCollection.find({ facility_id: parseInt(id) }).toArray();
 
         return {
             statusCode: 200,
