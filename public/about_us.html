@@ -674,7 +674,7 @@
 
             // Send POST request to submit contact form
             $.post("/.netlify/functions/contactus", formData)
-                .done(function() {
+                .done(function(data) {
                     // Show success modal
                     $("#contactSuccessModal").modal("show");
                 })
