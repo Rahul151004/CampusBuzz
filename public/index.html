@@ -408,7 +408,7 @@
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/login", formData)
+        $.post("/.netlify/functions/login", formData)
             .done(function(data) {
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
@@ -461,7 +461,7 @@
     }
 
     // Send signup request to server
-    $.post("/signup", formData)
+    $.post("/.netlify/functions/signup", formData)
         .done(function(data) {
             // Show signup success modal
             $("#signupSuccessModal").modal("show");
