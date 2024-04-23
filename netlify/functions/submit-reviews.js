@@ -8,12 +8,13 @@ exports.handler = async (event, context) => {
     try {
         const requestBody = queryString.parse(event.body);
         const { id, title, reviewtxt, rating } = requestBody;
+        const timestamp = new Date();
 
         await client.connect();
 
         const reviewsCollection = client.db('project').collection('reviews');
 
-        await reviewsCollection.insertOne({ facility_id: parseInt(id), title, reviewtxt, rating });
+        await reviewsCollection.insertOne({ facility_id: parseInt(id), title, timestamp, reviewtxt, rating });
 
         return {
             statusCode: 200,
