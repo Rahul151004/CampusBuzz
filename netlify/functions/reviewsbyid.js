@@ -5,13 +5,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 exports.handler = async (event, context) => {
     try {
+        console.log('Event:', event); // Log the event object to inspect its structure
+        
         await client.connect();
 
         const db = client.db('project');
         const reviewsCollection = db.collection('reviews');
 
-        const { id } = event.pathParameters; // Parse ID from pathParameters
-
+        const id = event.pathParameters && event.pathParameters.id; // Check if pathParameters exists
+        
         if (!id) {
             throw new Error('ID parameter not found in path parameters');
         }
