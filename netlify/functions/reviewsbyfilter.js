@@ -1,10 +1,13 @@
 const { MongoClient } = require('mongodb');
+const serverless = require('serverless-http');
 const express = require('express');
 const app = express();
 
-// MongoDB connection setup
+// Connection URI for MongoDB
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Connect to MongoDB
 client.connect(err => {
     if (err) {
         console.error('Error connecting to MongoDB:', err);
@@ -13,15 +16,16 @@ client.connect(err => {
     console.log('Connected to MongoDB');
 });
 
+// Get the database and reviews collection
 const db = client.db('project');
 const reviewsCollection = db.collection('reviews');
 
 // Route handler to fetch reviews based on filter
-app.get('/reviews/:filter', async (req, res) => {
+app.get('/reviewsbyfilter/:filter', async (req, res) => {
     try {
         const filter = req.params.filter;
-        let query;
 
+        let query;
         switch (filter) {
             case 'all-reviews':
                 query = reviewsCollection.find().limit(5);
@@ -33,30 +37,16 @@ app.get('/reviews/:filter', async (req, res) => {
                 query = reviewsCollection.find().sort({ rating: -1 }).limit(5);
                 break;
             default:
-                return res.status(400).send('Invalid filter');
+                return res.status(400).json({ error: 'Invalid filter' });
         }
-        console.log(filter);
+
         const reviews = await query.toArray();
-        console.log(reviews);
-        let reviewsHTML = `<div class="parent-reviews"><h2>${filter.charAt(0).toUpperCase() + filter.slice(1)}</h2>`;
-        reviews.forEach(review => {
-            reviewsHTML += `
-                <div class="reviews-container">
-                    <div class="review">
-                        <h6>${review.title}</h6>
-                        <p><strong>Rating: ${review.rating}/5</strong></p>
-                        <p>${review.reviewtxt}</p>
-                    </div>
-                </div>
-            `;
-        });
-        reviewsHTML += '</div>';
-        res.send(reviewsHTML);
+        res.json(reviews); // Send review data in JSON format
     } catch (error) {
         console.error('Error fetching reviews:', error);
-        res.status(500).send('Error fetching reviews');
+        res.status(500).json({ error: 'Error fetching reviews' });
     }
 });
 
 // Export the Express app
-module.exports.handler = app;
+module.exports.handler = serverless(app);

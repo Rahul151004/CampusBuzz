@@ -631,21 +631,43 @@ function fetchPopularReviews() {
 
 <script>
     $(document).ready(function() {
-        // Function to fetch reviews based on filter and update UI
-        function fetchReviews(filter) {
-            $.get(`/.netlify/functions/reviewsbyfilter/${filter}`, function(data) {
-                $('#reviews-container').html(data);
-            });
-        }
-
-        // Call fetchReviews function when the page loads with default filter 'all'
-        fetchReviews('all-reviews');
-        // Function to handle tab click event and fetch corresponding reviews
-        $('.tab-link').click(function(event) {
-            var filter = $(this).attr('href').substring(1); // Get the filter from href attribute
-            fetchReviews(filter); // Fetch reviews for the selected filter
+    // Function to fetch reviews based on filter and update UI
+    function fetchReviews(filter) {
+        $.get(`/.netlify/functions/reviewsbyfilter/${filter}`, function(data) {
+            // Process the received JSON data and generate HTML markup
+            const reviewsHTML = generateReviewsHTML(data);
+            $('#reviews-container').html(reviewsHTML);
         });
+    }
+
+    // Function to generate HTML markup for reviews
+    function generateReviewsHTML(reviews) {
+        let reviewsHTML = '<div class="parent-reviews">';
+        reviews.forEach(review => {
+            reviewsHTML += `
+                <div class="reviews-container">
+                    <div class="review">
+                        <h6>${review.title}</h6>
+                        <p><strong>Rating: ${review.rating}/5</strong></p>
+                        <p>${review.reviewtxt}</p>
+                    </div>
+                </div>
+            `;
+        });
+        reviewsHTML += '</div>';
+        return reviewsHTML;
+    }
+
+    // Call fetchReviews function when the page loads with default filter 'all'
+    fetchReviews('all-reviews');
+
+    // Function to handle tab click event and fetch corresponding reviews
+    $('.tab-link').click(function(event) {
+        var filter = $(this).attr('href').substring(1); // Get the filter from href attribute
+        fetchReviews(filter); // Fetch reviews for the selected filter
     });
+});
+
 </script>
 
 </body>
