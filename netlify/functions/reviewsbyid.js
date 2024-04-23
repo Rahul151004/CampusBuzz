@@ -10,6 +10,11 @@ exports.handler = async (event, context) => {
         const db = client.db('project');
         const reviewsCollection = db.collection('reviews');
 
+        const pathParameters = event.pathParameters;
+        if (!pathParameters || !pathParameters.id) {
+            throw new Error('ID parameter not found in path parameters');
+        }
+
         const id = parseInt(event.pathParameters.id);
         console.log(id);
         const reviews = await reviewsCollection.find({ facility_id: id }).toArray();
