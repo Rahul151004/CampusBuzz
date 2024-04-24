@@ -21,6 +21,6 @@ We welcome feedback and contributions from the community to help improve and enh
 Join the CampusBuzz community and stay connected for updates and announcements.
 
 ### Author
-[Rahul Bhat](https://github.com/Rahul15102004)
+[Rahul Bhat](https://github.com/Rahul151004)
 
 Happy exploring! 🚀
