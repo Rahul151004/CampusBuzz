@@ -4,4 +4,3 @@ public/logintest.html
 server.js
 test.js
 netlify.toml
-netlify/functions/*
