@@ -547,7 +547,7 @@ function fetchPopularReviews() {
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/.netilfy/functions/login", formData)
+        $.post("/.netlify/functions/login", formData)
             .done(function(data) {
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
@@ -600,7 +600,7 @@ function fetchPopularReviews() {
     }
 
     // Send signup request to server
-    $.post("/.netilfy/functions/signup", formData)
+    $.post("/.netlify/functions/signup", formData)
         .done(function(data) {
             // Show signup success modal
             $("#signupSuccessModal").modal("show");
