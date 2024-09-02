@@ -7,6 +7,7 @@
     <title>CampusBuzz - Reviews</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <!-- Slick Slider CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css">
@@ -283,7 +284,7 @@
                         <a class="nav-link" href="about_us.html">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                        <a class="nav-link" href="#" data-toggle="modal" id="logbutton" data-target="#loginModal">Login</a>
                     </li>
                 </ul>
                 <!-- Search bar -->

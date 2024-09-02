@@ -7,6 +7,7 @@
     <title>Stores</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <style>
         /* Add custom styles here */
         body {
@@ -187,7 +188,7 @@
                             <a class="nav-link" href="about_us.html">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                            <a class="nav-link" id="logbutton" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
                         </li>
                     </ul>
                     <!-- Search bar -->
@@ -541,15 +542,16 @@
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/.netlify/functions/login", formData)
+        $.post("/login", formData)
             .done(function(data) {
+                localStorage.setItem('token', data.token);
+                $("#logbutton").text('Logout').removeAttr('data-target');
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
                 // Hide the modal after 5 seconds
                 setTimeout(function() {
                     $("#loginSuccessModal").modal("hide");
                     $("#loginModal").modal("hide");
-                    document.getElementById("loginForm").reset();
                 }, 5000);
             })
             .fail(function() {
@@ -561,6 +563,18 @@
                 }, 5000);
             });
     });
+
+    $("#logbutton").click(function(event) {
+    if ($(this).text() === 'Logout') {
+        event.preventDefault();
+        localStorage.removeItem('token');
+        $(this).text('Login');    
+        window.location.href ='/home.html';
+        setTimeout(() => {
+            $(this).attr('data-target', '#loginModal');
+        }, 1000);
+    }
+});
 
     // Handle Signup Form Submission
     $("#signupForm").submit(function(event) {
@@ -594,15 +608,18 @@
     }
 
     // Send signup request to server
-    $.post("/.netlify/functions/signup", formData)
+    $.post("/signup", formData)
         .done(function(data) {
+            localStorage.setItem('token', data.token);
+            $("#logbutton").text('Logout').removeAttr('data-target');
             // Show signup success modal
             $("#signupSuccessModal").modal("show");
+            
             // Hide the modal after 5 seconds
             setTimeout(function() {
                 $("#signupSuccessModal").modal("hide");
                 $("#loginModal").modal("hide");
-                document.getElementById("signupForm").reset();
+
             }, 5000);
         })
         .fail(function() {
@@ -622,32 +639,53 @@
         $("#loginModalLabel").text("Login to CampusBuzz");
     });
 });
+
 </script>
 
+
 <script>
-    // Submit review form
-    $('#review-form').submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
-    
-        // Serialize form data
-        var formData = $(this).serialize();
-    
-        // Send POST request to submit review
-        $.post("/.netlify/functions/submit-reviews", formData)
-            .done(function() {
-                // Show review success modal
-                $("#reviewSuccessModal").modal("show");
-                setTimeout(function(){
-                    $("#reviewSuccessModal").modal("hide");
-                    $("#reviewModal").modal("hide");
-                    document.getElementById("review-form").reset();
-                },4000);
-            })
-            .fail(function() {
-                // Show review error modal
-                $("#reviewErrorModal").modal("show");
-            });
-    });
+    // Example usage
+    const token = localStorage.getItem('token'); // Replace 'token' with your actual key
+
+    if (token) {
+        try {
+            const decodedToken = jwt_decode(token);
+            console.log(decodedToken); // This will show the decoded token payload
+
+            // Access token expiration time
+            const expiry = decodedToken.exp; // 'exp' contains the expiration time in seconds since the epoch
+            console.log(`Token expires at: ${new Date(expiry * 1000).toLocaleString()}`);
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    } else {
+        console.log('No token found');
+    }
+
+    // Check token expiry every 30 seconds
+    setInterval(() => {
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+            try {
+                const decodedToken = jwt_decode(token);
+                const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+                if (decodedToken.exp < currentTime) {
+                    // Token is expired
+                    $("#logbutton").text('Login');
+                    $("#logbutton").attr('data-target', '#loginModal');
+                    localStorage.removeItem('token');
+                    window.location.href = '/home.html'; // Redirect to login page
+                }else{
+                    $("#logbutton").text('Logout');
+                    $("#logbutton").attr('data-target','');
+                }
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, 1000);
 </script>
     
 </body>
