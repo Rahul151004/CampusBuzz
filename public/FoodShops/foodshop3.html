@@ -622,15 +622,16 @@
             password: $("#password").val()
         };
         // Send login request to server
-        $.post("/.netlify/functions/login", formData)
+        $.post("/login", formData)
             .done(function(data) {
+                localStorage.setItem('token', data.token);
+                $("#logbutton").text('Logout').removeAttr('data-target');
                 // Show login success modal
                 $("#loginSuccessModal").modal("show");
                 // Hide the modal after 5 seconds
                 setTimeout(function() {
                     $("#loginSuccessModal").modal("hide");
                     $("#loginModal").modal("hide");
-                    document.getElementById("signupForm").reset();
                 }, 5000);
             })
             .fail(function() {
@@ -642,6 +643,18 @@
                 }, 5000);
             });
     });
+
+    $("#logbutton").click(function(event) {
+    if ($(this).text() === 'Logout') {
+        event.preventDefault();
+        localStorage.removeItem('token');
+        $(this).text('Login');    
+        window.location.href ='/home.html';
+        setTimeout(() => {
+            $(this).attr('data-target', '#loginModal');
+        }, 1000);
+    }
+});
 
     // Handle Signup Form Submission
     $("#signupForm").submit(function(event) {
@@ -675,15 +688,18 @@
     }
 
     // Send signup request to server
-    $.post("/.netlify/functions/signup", formData)
+    $.post("/signup", formData)
         .done(function(data) {
+            localStorage.setItem('token', data.token);
+            $("#logbutton").text('Logout').removeAttr('data-target');
             // Show signup success modal
             $("#signupSuccessModal").modal("show");
+            
             // Hide the modal after 5 seconds
             setTimeout(function() {
                 $("#signupSuccessModal").modal("hide");
                 $("#loginModal").modal("hide");
-                document.getElementById("signupForm").reset();
+
             }, 5000);
         })
         .fail(function() {
@@ -703,74 +719,122 @@
         $("#loginModalLabel").text("Login to CampusBuzz");
     });
 });
+
 </script>
 
 <script>
+    
     $(document).ready(function() {
-    // Function to fetch reviews and update HTML
-    function fetchReviews() {
-        $.get('/.netlify/functions/reviewsbyid/3', function(data) {
-            // Generate HTML for reviews
-            let reviewsHTML = `<div class="review-button-container">
-                <h2>Reviews</h2>
-                <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#reviewModal" id="write-review-btn">Write a Review</a>
-                </div>`;
-
-
-            // Iterate over reviews and add to HTML
-            data.forEach(review => {
-                reviewsHTML += `
-                    <div class="review-container">
-                        <div class="review">
-                            <h6>${review.title}</h6>
-                            <p><strong>Rating: ${review.rating}/5</strong></p>
-                            <p>${review.reviewtxt}</p>
-                        </div>
-                    </div>
-                `;
+        // Function to fetch reviews and update HTML
+        function fetchReviews() {
+            $.get('/reviews/3', function(data) {
+                $('#reviews-container').html(data);
+                    openTab(event,'reviews');
             });
+        }
 
-            // Update reviews container with generated HTML
-            $('#reviews-container').html(reviewsHTML);
-
-            // Open reviews tab
-            openTab(event, 'reviews');
-        }).fail(function(xhr, status, error) {
-            console.error('Error fetching reviews:', error);
-            // Handle error
-        });
-    }
-
-    // Call the fetchReviews function when the page loads
-    fetchReviews();
-});
-</script>
-
-<script>
-    // Submit review form
-    $('#review-form').submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
-    
-        // Serialize form data
-        var formData = $(this).serialize();
-    
-        // Send POST request to submit review
-        $.post("/.netlify/functions/submit-reviewsbyid/3", formData)
-            .done(function() {
-                // Show review success modal
-                $("#reviewSuccessModal").modal("show");
-                setTimeout(function(){
-                    $("#reviewSuccessModal").modal("hide");
-                    $("#reviewModal").modal("hide");
-                    document.getElementById("review-form").reset();
-                },4000);
-            })
-            .fail(function() {
-                // Show review error modal
-                $("#reviewErrorModal").modal("show");
-            });
+        // Call the fetchReviews function when the page loads
+        fetchReviews();
     });
 </script>
+
+<script>
+
+    $('#review-form').submit(function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Serialize form data
+    var formData = $(this).serialize();
+    
+    // Retrieve the JWT token from local storage or a variable
+    var token = localStorage.getItem('token'); // or however you store the token
+    // Send POST request to submit review with token in headers
+    $.ajax({
+        url: "/submit-reviews/3",
+        type: "POST",
+        data: formData,
+        headers: {
+            'Authorization': token
+        },
+        success: function() {
+            // Show review success modal
+            $("#reviewSuccessModal").modal("show");
+            setTimeout(function(){
+                $("#reviewSuccessModal").modal("hide");
+                $("#reviewModal").modal("hide");
+                document.getElementById("review-form").reset();
+            }, 4000);
+        },
+        error: function(jqXHR) {
+            let errorMessage;
+            switch (jqXHR.status) {
+                case 401:
+                    errorMessage = "Unauthorized access. Please log in again.";
+                    break;
+                case 403:
+                    errorMessage = "You do not have permission to perform this action.";
+                    break;
+                case 500:
+                    errorMessage = "An internal error occurred. Please try again later.";
+                    break;
+                default:
+                    errorMessage = "An error occurred. Please try again.";
+                    break;
+            }
+            // Show review error modal with specific message
+            $("#reviewErrorModal .modal-body").text(errorMessage);
+            $("#reviewErrorModal").modal("show");
+        }
+    });
+});
+
+</script>
+
+<script>
+    // Example usage
+    const token = localStorage.getItem('token'); // Replace 'token' with your actual key
+
+    if (token) {
+        try {
+            const decodedToken = jwt_decode(token);
+            console.log(decodedToken); // This will show the decoded token payload
+
+            // Access token expiration time
+            const expiry = decodedToken.exp; // 'exp' contains the expiration time in seconds since the epoch
+            console.log(`Token expires at: ${new Date(expiry * 1000).toLocaleString()}`);
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    } else {
+        console.log('No token found');
+    }
+
+    // Check token expiry every 30 seconds
+    setInterval(() => {
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+            try {
+                const decodedToken = jwt_decode(token);
+                const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+                if (decodedToken.exp < currentTime) {
+                    // Token is expired
+                    $("#logbutton").text('Login');
+                    $("#logbutton").attr('data-target', '#loginModal');
+                    localStorage.removeItem('token');
+                    window.location.href = '/home.html'; // Redirect to login page
+                }else{
+                    $("#logbutton").text('Logout');
+                    $("#logbutton").attr('data-target','');
+                }
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    }, 1000);
+</script>
+
 
 
 </body>
