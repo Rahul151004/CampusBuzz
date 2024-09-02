@@ -197,20 +197,21 @@ app.get('/review/:filter', async (req, res) => {
         }
 
         const reviews = await query.toArray();
-        let reviewsHTML = `<div class="parent-reviews"><h2>${filter.charAt(0).toUpperCase() + filter.slice(1)}</h2>`;
-        reviews.forEach(review => {
-            reviewsHTML += `
-                    <div class="reviews-container">
-                        <div class="review">
-                            <h6>${review.title}</h6>
-                            <p><strong>Rating: ${review.rating}/5</strong></p>
-                            <p>${review.reviewtxt}</p>
-                        </div>
-                    </div>
-                `;
-        });
-        reviewsHTML += '</div>';
-        res.send(reviewsHTML);
+        res.json(reviews);
+        // let reviewsHTML = `<div class="parent-reviews"><h2>${filter.charAt(0).toUpperCase() + filter.slice(1)}</h2>`;
+        // reviews.forEach(review => {
+        //     reviewsHTML += `
+        //             <div class="reviews-container">
+        //                 <div class="review">
+        //                     <h6>${review.title}</h6>
+        //                     <p><strong>Rating: ${review.rating}/5</strong></p>
+        //                     <p>${review.reviewtxt}</p>
+        //                 </div>
+        //             </div>
+        //         `;
+        // });
+        // reviewsHTML += '</div>';
+        // res.send(reviewsHTML);
     } catch (error) {
         console.error('Error fetching reviews:', error);
         res.status(500).send('Error fetching reviews');
