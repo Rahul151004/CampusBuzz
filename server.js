@@ -113,6 +113,8 @@ app.post('/signup', async (req, res) => {
 app.post('/submit-reviews', verifyToken, async (req, res) => {
     const { id, title, reviewtxt, rating } = req.body;
     
+    const timestamp = new Date();
+
     try {
         const user= await usersCollection.findOne({_id: new ObjectId(req.userId)});
         
@@ -120,7 +122,7 @@ app.post('/submit-reviews', verifyToken, async (req, res) => {
            return res.status(404).send("User not Found");
         }
         
-        await reviewsCollection.insertOne({ facility_id: id, title, reviewtxt, rating , author: user.username, email : user.email});
+        await reviewsCollection.insertOne({ facility_id: id, title, timestamp, reviewtxt, rating , author: user.username, email : user.email});
         
         res.sendStatus(200); // Send success status
     } catch (error) {
@@ -133,6 +135,9 @@ app.post('/submit-reviews', verifyToken, async (req, res) => {
 app.post('/submit-reviews/:id', verifyToken, async (req, res) => {
     const id = parseInt(req.params.id);
     const { title, reviewtxt, rating } = req.body;
+
+    const timestamp = new Date();
+
     try {
         const user= await usersCollection.findOne({_id: new ObjectId(req.userId)});
         if(!user){
@@ -140,7 +145,7 @@ app.post('/submit-reviews/:id', verifyToken, async (req, res) => {
         }
         
         
-        await reviewsCollection.insertOne({ facility_id: id, title, reviewtxt, rating , author: user.username, email : user.email});
+        await reviewsCollection.insertOne({ facility_id: id, title, timestamp, reviewtxt, rating , author: user.username, email : user.email});
 
         res.sendStatus(200); // Send success status
     } catch (error) {
