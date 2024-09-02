@@ -6,9 +6,10 @@ const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000;
+require('dotenv').config();
 
 // Connection URI for MongoDB
-const uri = '***REMOVED***';
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // JWT Secret Key
