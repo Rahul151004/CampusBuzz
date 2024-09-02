@@ -736,16 +736,23 @@
             // Serialize form data
             var formData = $(this).serialize();
 
-            // Send POST request to submit contact form
-            $.post("/contact", formData)
-                .done(function(data) {
+            var token = localStorage.getItem('token');
+            $.ajax({
+                url: "/contact",
+                type: "POST",
+                data:formData,
+                headers: {
+                    'Authorization': token
+                },
+                success: function(){
                     // Show success modal
                     $("#contactSuccessModal").modal("show");
-                })
-                .fail(function() {
+                },
+                error: function(){
                     // Show error modal
                     $("#contactErrorModal").modal("show");
-                });
+                }
+            });
         });
     });
 </script>
