@@ -700,7 +700,7 @@ function fetchPopularReviews() {
 
 // Function to fetch and display reviews based on filter
 function fetchReviews(filter) {
-    $.get(`/.netlify/functions/reviewsbyfilter/${filter}`, function(data) {
+    $.get(`/review/${filter}`, function(data) {
         let reviewsHTML;
         if (filter === 'all-reviews') {
             reviewsHTML = `<div class="parent-reviews"><h2>All Reviews</h2>`;
