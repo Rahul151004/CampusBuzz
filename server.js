@@ -12,10 +12,17 @@ const cors = require('cors');
 require('dotenv').config();
 
 app.use(cookieParser());
-app.use(cors({ origin: 'https://campusbuzzlpu.netlify.app', methods: ['GET', 'POST'], credentials: true }));
+
 // Connection URI for MongoDB
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// List of allowed origins
+const allowedOrigins = [
+    'https://campusbuzzlpu.netlify.app',
+    'https://campusbuzzlpu.netlify.app/'
+  ];
+
 
 // JWT Secret Key
 const secretKey = process.env.JWT_SECRET || 'your_jwt_secret_key';
@@ -28,6 +35,20 @@ client.connect(err => {
     }
     console.log('Connected to MongoDB');
 });
+
+// Configure CORS with a function to check allowed origins
+app.use(cors({
+    origin: (origin, callback) => {
+      // Check if the incoming request's origin is in the list of allowed origins
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST'],
+    credentials: true
+  }));
 
 // Get the database and collections
 const db = client.db('project');
