@@ -310,7 +310,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="/signup">
+                    <form method="post" action="https://campusbuzz.onrender/signup">
                         <!-- Add signup form fields here -->
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -430,7 +430,7 @@
     });
     // Function to fetch and display popular reviews
 function fetchPopularReviews() {
-    $.get('/popular-reviews', function(data) {
+    $.get('https://campusbuzz.onrender/popular-reviews', function(data) {
         data.forEach(review => {
             const reviewHTML = `
                 <div class="review-container">
@@ -493,7 +493,7 @@ function fetchPopularReviews() {
                 password: $("#password").val()
             };
 
-            $.post("/login", formData)
+            $.post("https://campusbuzz.onrender/login", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#loginSuccessModal").modal("show");
@@ -512,7 +512,7 @@ function fetchPopularReviews() {
         $("#logbutton").click(function(event) {
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
-                $.post("/logout")
+                $.post("https://campusbuzz.onrender/logout")
                     .done(function() {
                         $("#logbutton").text('Login').attr('data-target', '#loginModal');
                         window.location.href = '/home.html';
@@ -549,7 +549,7 @@ function fetchPopularReviews() {
                 return;
             }
 
-            $.post("/signup", formData)
+            $.post("https://campusbuzz.onrender/signup", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#signupSuccessModal").modal("show");
@@ -574,7 +574,7 @@ function fetchPopularReviews() {
 
         // Check if user is logged in
         function checkUserLoggedIn() {
-            $.get("/check-token")
+            $.get("https://campusbuzz.onrender/logout")
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                 })
