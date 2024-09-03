@@ -407,20 +407,29 @@
                 password: $("#password").val()
             };
 
-            $.post("https://campusbuzz.onrender.com/login", formData)
-                .done(function() {
-                    $("#logbutton").text('Logout').removeAttr('data-target');
-                    $("#loginSuccessModal").modal("show");
-                    setTimeout(() => {
-                        $("#loginSuccessModal").modal("hide");
-                        $("#loginModal").modal("hide");
-                    }, 5000);
-                })
-                .fail(function() {
-                    $("#loginErrorModal").modal("show");
-                    setTimeout(() => $("#loginErrorModal").modal("hide"), 5000);
-                });
-        });
+            $.ajax({
+    url: "https://campusbuzz.onrender.com/login",
+    type: "POST",
+    data: formData,
+    xhrFields: {
+        withCredentials: true
+    },
+    crossDomain: true,
+    success: function(response) {
+        console.log('Success:', response); // Debug success response
+        $("#logbutton").text('Logout').removeAttr('data-target');
+        $("#loginSuccessModal").modal("show");
+        setTimeout(() => {
+            $("#loginSuccessModal").modal("hide");
+            $("#loginModal").modal("hide");
+        }, 5000);
+    },
+    error: function(xhr, status, error) {
+        console.error('Error:', error); // Debug error response
+        $("#loginErrorModal").modal("show");
+        setTimeout(() => $("#loginErrorModal").modal("hide"), 5000);
+    }
+});
 
         // Handle Logout
         $("#logbutton").click(function(event) {
