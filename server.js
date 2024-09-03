@@ -122,8 +122,6 @@ app.post('/login', async (req, res) => {
 
 // Logout route
 app.post('/logout', (req, res) => {
-    console.log('hello');
-    
     res.clearCookie('token');
     // JWT is stateless, so we just return success
     res.sendStatus(200); // Send success status

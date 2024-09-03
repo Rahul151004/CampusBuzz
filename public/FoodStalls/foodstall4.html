@@ -617,33 +617,50 @@
                 password: $("#password").val()
             };
 
-            $.post("https://campusbuzz.onrender.com/login", formData)
-                .done(function() {
+            $.ajax({
+                url: "https://campusbuzz.onrender.com/login",
+                type: "POST",
+                data: formData,
+                xhrFields: {
+                    withCredentials: true // Ensure cookies are sent with the request
+                },
+                crossDomain: true, // Necessary for cross-site requests
+                success: function(response) {
+                    console.log('Success:', response); // Debug success response
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#loginSuccessModal").modal("show");
                     setTimeout(() => {
                         $("#loginSuccessModal").modal("hide");
                         $("#loginModal").modal("hide");
                     }, 5000);
-                })
-                .fail(function() {
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error); // Debug error response
                     $("#loginErrorModal").modal("show");
                     setTimeout(() => $("#loginErrorModal").modal("hide"), 5000);
-                });
+                }
+            });
         });
 
         // Handle Logout
         $("#logbutton").click(function(event) {
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
-                $.post("https://campusbuzz.onrender.com/logout")
-                    .done(function() {
+                $.ajax({
+                    url: "https://campusbuzz.onrender.com/logout",
+                    type: "POST",
+                    xhrFields: {
+                        withCredentials: true // Ensure cookies are sent with the request
+                    },
+                    crossDomain: true, // Necessary for cross-site requests
+                    success: function() {
                         $("#logbutton").text('Login').attr('data-target', '#loginModal');
                         window.location.href = '/home.html';
-                    })
-                    .fail(function() {
+                    },
+                    error: function() {
                         alert("Failed to log out. Please try again.");
-                    });
+                    }
+                });
             }
         });
 
@@ -673,20 +690,28 @@
                 return;
             }
 
-            $.post("https://campusbuzz.onrender.com/signup", formData)
-                .done(function() {
+            $.ajax({
+                url: "https://campusbuzz.onrender.com/signup",
+                type: "POST",
+                data: formData,
+                xhrFields: {
+                    withCredentials: true // Ensure cookies are sent with the request
+                },
+                crossDomain: true, // Necessary for cross-site requests
+                success: function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#signupSuccessModal").modal("show");
                     setTimeout(() => {
                         $("#signupSuccessModal").modal("hide");
                         $("#loginModal").modal("hide");
                     }, 5000);
-                })
-                .fail(function() {
+                },
+                error: function() {
                     $("#signupErrorModal").modal("show");
                     $("#errortext").text("Email already exists! Please select a different email.");
                     setTimeout(() => $("#signupErrorModal").modal("hide"), 5000);
-                });
+                }
+            });
         });
 
         // Hide Forms When Modal is Closed
@@ -698,13 +723,20 @@
 
         // Check if user is logged in
         function checkUserLoggedIn() {
-            $.get("https://campusbuzz.onrender.com/check-token")
-                .done(function() {
+            $.ajax({
+                url: "https://campusbuzz.onrender.com/check-token",
+                type: "GET",
+                xhrFields: {
+                    withCredentials: true // Ensure cookies are sent with the request
+                },
+                crossDomain: true, // Necessary for cross-site requests
+                success: function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
-                })
-                .fail(function() {
+                },
+                error: function() {
                     $("#logbutton").text('Login').attr('data-target', '#loginModal');
-                });
+                }
+            });
         }
 
         // Call checkUserLoggedIn on page load
