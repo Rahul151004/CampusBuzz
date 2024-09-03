@@ -596,244 +596,179 @@
 
 <!-- Script to toggle between login and signup forms -->
 <script>
-    $(document).ready(function(){
-    // Show Signup Form
-    $("#signupLink").click(function(){
-        $("#loginForm").hide();
-        $("#signupForm").show();
-        $("#loginModalLabel").text("Sign Up to CampusBuzz");
-    });
-
-    // Show Login Form
-    $("#loginLink").click(function(){
-        $("#signupForm").hide();
-        $("#loginForm").show();
-        $("#loginModalLabel").text("Login to CampusBuzz");
-    });
-
-    // Handle Login Form Submission
-    $("#loginForm").submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Get form data
-        var formData = {
-            email: $("#email").val(),
-            password: $("#password").val()
-        };
-        // Send login request to server
-        $.post("/login", formData)
-            .done(function(data) {
-                localStorage.setItem('token', data.token);
-                $("#logbutton").text('Logout').removeAttr('data-target');
-                // Show login success modal
-                $("#loginSuccessModal").modal("show");
-                // Hide the modal after 5 seconds
-                setTimeout(function() {
-                    $("#loginSuccessModal").modal("hide");
-                    $("#loginModal").modal("hide");
-                }, 5000);
-            })
-            .fail(function() {
-                // Show login error modal
-                $("#loginErrorModal").modal("show");
-                // Hide the modal after 5 seconds
-                setTimeout(function() {
-                    $("#loginErrorModal").modal("hide");
-                }, 5000);
-            });
-    });
-
-    $("#logbutton").click(function(event) {
-    if ($(this).text() === 'Logout') {
-        event.preventDefault();
-        localStorage.removeItem('token');
-        $(this).text('Login');    
-        window.location.href ='/home.html';
-        setTimeout(() => {
-            $(this).attr('data-target', '#loginModal');
-        }, 1000);
-    }
-});
-
-    // Handle Signup Form Submission
-    $("#signupForm").submit(function(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    // Get form data
-    var formData = {
-        username: $("#username").val(),
-        email: $("#signupEmail").val(),
-        password: $("#signupPassword").val(),
-        confirmPassword: $("#confirmPassword").val()
-    };
-
-    // Validate password
-    var password = $("#signupPassword").val();
-    var confirmPassword = $("#confirmPassword").val();
-    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-    
-    if (!passwordRegex.test(password)) {
-        // Show password requirements modal
-        $("#signupErrorModal").modal("show");
-        $("#errortext").text("Password must be 8 characters long and must contain an uppercase and lowercase character, a digit and a special character");
-        return; // Exit the function
-    }
-
-    if (password !== confirmPassword) {
-        // Show confirm password mismatch modal
-        $("#signupErrorModal").modal("show");
-        $("#errortext").text("Passwords do not match");
-        return; // Exit the function
-    }
-
-    // Send signup request to server
-    $.post("/signup", formData)
-        .done(function(data) {
-            localStorage.setItem('token', data.token);
-            $("#logbutton").text('Logout').removeAttr('data-target');
-            // Show signup success modal
-            $("#signupSuccessModal").modal("show");
-            
-            // Hide the modal after 5 seconds
-            setTimeout(function() {
-                $("#signupSuccessModal").modal("hide");
-                $("#loginModal").modal("hide");
-
-            }, 5000);
-        })
-        .fail(function() {
-            // Show signup error modal
-            $("#signupErrorModal").modal("show");
-            $("#errortext").text("Email already exists! Please select a different email.");
-            // Hide the modal after 5 seconds
-            setTimeout(function() {
-                $("#signupErrorModal").modal("hide");
-            }, 5000);
+    $(document).ready(function() {
+        $("#signupLink").click(function() {
+            $("#loginForm").hide();
+            $("#signupForm").show();
+            $("#loginModalLabel").text("Sign Up to CampusBuzz");
         });
-    });
-    // Hide Forms When Modal is Closed
-    $('#loginModal').on('hidden.bs.modal', function () {
-        $("#signupForm").hide();
-        $("#loginForm").show();
-        $("#loginModalLabel").text("Login to CampusBuzz");
-    });
-});
 
+        $("#loginLink").click(function() {
+            $("#signupForm").hide();
+            $("#loginForm").show();
+            $("#loginModalLabel").text("Login to CampusBuzz");
+        });
+
+        // Handle Login Form Submission
+        $("#loginForm").submit(function(event) {
+            event.preventDefault();
+            var formData = {
+                email: $("#email").val(),
+                password: $("#password").val()
+            };
+
+            $.post("/login", formData)
+                .done(function() {
+                    $("#logbutton").text('Logout').removeAttr('data-target');
+                    $("#loginSuccessModal").modal("show");
+                    setTimeout(() => {
+                        $("#loginSuccessModal").modal("hide");
+                        $("#loginModal").modal("hide");
+                    }, 5000);
+                })
+                .fail(function() {
+                    $("#loginErrorModal").modal("show");
+                    setTimeout(() => $("#loginErrorModal").modal("hide"), 5000);
+                });
+        });
+
+        // Handle Logout
+        $("#logbutton").click(function(event) {
+            if ($(this).text() === 'Logout') {
+                event.preventDefault();
+                $.post("/logout")
+                    .done(function() {
+                        $("#logbutton").text('Login').attr('data-target', '#loginModal');
+                        window.location.href = '/home.html';
+                    })
+                    .fail(function() {
+                        alert("Failed to log out. Please try again.");
+                    });
+            }
+        });
+
+        // Handle Signup Form Submission
+        $("#signupForm").submit(function(event) {
+            event.preventDefault();
+            var formData = {
+                username: $("#username").val(),
+                email: $("#signupEmail").val(),
+                password: $("#signupPassword").val(),
+                confirmPassword: $("#confirmPassword").val()
+            };
+
+            var password = $("#signupPassword").val();
+            var confirmPassword = $("#confirmPassword").val();
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+            if (!passwordRegex.test(password)) {
+                $("#signupErrorModal").modal("show");
+                $("#errortext").text("Password must be 8 characters long and contain uppercase, lowercase, digit, and special character.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                $("#signupErrorModal").modal("show");
+                $("#errortext").text("Passwords do not match");
+                return;
+            }
+
+            $.post("/signup", formData)
+                .done(function() {
+                    $("#logbutton").text('Logout').removeAttr('data-target');
+                    $("#signupSuccessModal").modal("show");
+                    setTimeout(() => {
+                        $("#signupSuccessModal").modal("hide");
+                        $("#loginModal").modal("hide");
+                    }, 5000);
+                })
+                .fail(function() {
+                    $("#signupErrorModal").modal("show");
+                    $("#errortext").text("Email already exists! Please select a different email.");
+                    setTimeout(() => $("#signupErrorModal").modal("hide"), 5000);
+                });
+        });
+
+        // Hide Forms When Modal is Closed
+        $('#loginModal').on('hidden.bs.modal', function () {
+            $("#signupForm").hide();
+            $("#loginForm").show();
+            $("#loginModalLabel").text("Login to CampusBuzz");
+        });
+
+        // Check if user is logged in
+        function checkUserLoggedIn() {
+            $.get("/check-token")
+                .done(function() {
+                    $("#logbutton").text('Logout').removeAttr('data-target');
+                })
+                .fail(function() {
+                    $("#logbutton").text('Login').attr('data-target', '#loginModal');
+                });
+        }
+
+        // Call checkUserLoggedIn on page load
+        checkUserLoggedIn();
+
+        // Check token status every 30 seconds
+        setInterval(checkUserLoggedIn, 5000);
+    });
 </script>
 
+<!-- Script to fetch and display reviews -->
 <script>
-    
     $(document).ready(function() {
-        // Function to fetch reviews and update HTML
         function fetchReviews() {
             $.get('/reviews/18', function(data) {
                 $('#reviews-container').html(data);
-                    openTab(event,'reviews');
+                openTab(event, 'reviews');
             });
         }
 
-        // Call the fetchReviews function when the page loads
         fetchReviews();
     });
 </script>
 
+<!-- Script to submit review form -->
 <script>
-
     $('#review-form').submit(function(event) {
-    event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
+        var formData = $(this).serialize();
 
-    // Serialize form data
-    var formData = $(this).serialize();
-    
-    // Retrieve the JWT token from local storage or a variable
-    var token = localStorage.getItem('token'); // or however you store the token
-    // Send POST request to submit review with token in headers
-    $.ajax({
-        url: "/submit-reviews/18",
-        type: "POST",
-        data: formData,
-        headers: {
-            'Authorization': token
-        },
-        success: function() {
-            // Show review success modal
-            $("#reviewSuccessModal").modal("show");
-            setTimeout(function(){
-                $("#reviewSuccessModal").modal("hide");
-                $("#reviewModal").modal("hide");
-                document.getElementById("review-form").reset();
-            }, 4000);
-        },
-        error: function(jqXHR) {
-            let errorMessage;
-            switch (jqXHR.status) {
-                case 401:
-                    errorMessage = "Unauthorized access. Please log in again.";
-                    break;
-                case 403:
-                    errorMessage = "You do not have permission to perform this action.";
-                    break;
-                case 500:
-                    errorMessage = "An internal error occurred. Please try again later.";
-                    break;
-                default:
-                    errorMessage = "An error occurred. Please try again.";
-                    break;
-            }
-            // Show review error modal with specific message
-            $("#reviewErrorModal .modal-body").text(errorMessage);
-            $("#reviewErrorModal").modal("show");
-        }
-    });
-});
-
-</script>
-
-<script>
-    // Example usage
-    const token = localStorage.getItem('token'); // Replace 'token' with your actual key
-
-    if (token) {
-        try {
-            const decodedToken = jwt_decode(token);
-            console.log(decodedToken); // This will show the decoded token payload
-
-            // Access token expiration time
-            const expiry = decodedToken.exp; // 'exp' contains the expiration time in seconds since the epoch
-            console.log(`Token expires at: ${new Date(expiry * 1000).toLocaleString()}`);
-        } catch (error) {
-            console.error('Error decoding token:', error);
-        }
-    } else {
-        console.log('No token found');
-    }
-
-    // Check token expiry every 30 seconds
-    setInterval(() => {
-        const token = localStorage.getItem('token');
-        
-        if (token) {
-            try {
-                const decodedToken = jwt_decode(token);
-                const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-
-                if (decodedToken.exp < currentTime) {
-                    // Token is expired
-                    $("#logbutton").text('Login');
-                    $("#logbutton").attr('data-target', '#loginModal');
-                    localStorage.removeItem('token');
-                    window.location.href = '/home.html'; // Redirect to login page
-                }else{
-                    $("#logbutton").text('Logout');
-                    $("#logbutton").attr('data-target','');
+        $.ajax({
+            url: "/submit-reviews/18",
+            type: "POST",
+            data: formData,
+            success: function() {
+                $("#reviewSuccessModal").modal("show");
+                setTimeout(() => {
+                    $("#reviewSuccessModal").modal("hide");
+                    $("#reviewModal").modal("hide");
+                    $("#review-form")[0].reset();
+                }, 4000);
+            },
+            error: function(jqXHR) {
+                let errorMessage;
+                switch (jqXHR.status) {
+                    case 401:
+                        errorMessage = "Unauthorized access. Please log in again.";
+                        break;
+                    case 403:
+                        errorMessage = "You do not have permission to perform this action.";
+                        break;
+                    case 500:
+                        errorMessage = "An internal error occurred. Please try again later.";
+                        break;
+                    default:
+                        errorMessage = "An error occurred. Please try again.";
+                        break;
                 }
-            } catch (error) {
-                console.error('Error decoding token:', error);
+                $("#reviewErrorModal .modal-body").text(errorMessage);
+                $("#reviewErrorModal").modal("show");
             }
-        }
-    }, 1000);
+        });
+    });
 </script>
-
-
 
 </body>
 </html>

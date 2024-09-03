@@ -146,6 +146,7 @@ app.post('/signup', async (req, res) => {
 // Handling submitted reviews
 app.post('/submit-reviews', verifyToken, async (req, res) => {
     const { id, title, reviewtxt, rating } = req.body;
+    const intid=parseInt(id);
     
     const timestamp = new Date();
 
@@ -156,7 +157,7 @@ app.post('/submit-reviews', verifyToken, async (req, res) => {
            return res.status(404).send("User not Found");
         }
         
-        await reviewsCollection.insertOne({ facility_id: id, title, timestamp, reviewtxt, rating , author: user.username, email : user.email});
+        await reviewsCollection.insertOne({ facility_id: intid, title, timestamp, reviewtxt, rating , author: user.username, email : user.email});
         
         res.sendStatus(200); // Send success status
     } catch (error) {
