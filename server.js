@@ -12,7 +12,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 app.use(cookieParser());
-app.use(cors({ origin: 'https://campusbuzzlpu.netlify.app/', methods: ['GET', 'POST'], credentials: true }));
+app.use(cors({ origin: 'https://campusbuzzlpu.netlify.app', methods: ['GET', 'POST'], credentials: true }));
 // Connection URI for MongoDB
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
