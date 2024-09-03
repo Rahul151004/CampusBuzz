@@ -342,7 +342,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender/login">
+                    <form method="post" action="https://campusbuzz.onrender.com/login">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label class="form-control-placeholder" for="email">Email</label>
@@ -360,7 +360,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender/signup">
+                    <form method="post" action="https://campusbuzz.onrender.com/signup">
                         <!-- Add signup form fields here -->
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -482,7 +482,7 @@
     });
     // Function to fetch and display popular reviews
 function fetchPopularReviews() {
-    $.get('https://campusbuzz.onrender/popular-reviews', function(data) {
+    $.get('https://campusbuzz.onrender.com/popular-reviews', function(data) {
         data.forEach(review => {
             const reviewHTML = `
                 <div class="review-container">
@@ -545,7 +545,7 @@ function fetchPopularReviews() {
                 password: $("#password").val()
             };
 
-            $.post("https://campusbuzz.onrender/login", formData)
+            $.post("https://campusbuzz.onrender.com/login", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#loginSuccessModal").modal("show");
@@ -564,7 +564,7 @@ function fetchPopularReviews() {
         $("#logbutton").click(function(event) {
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
-                $.post("https://campusbuzz.onrender/logout")
+                $.post("https://campusbuzz.onrender.com/logout")
                     .done(function() {
                         $("#logbutton").text('Login').attr('data-target', '#loginModal');
                         window.location.href = '/home.html';
@@ -601,7 +601,7 @@ function fetchPopularReviews() {
                 return;
             }
 
-            $.post("https://campusbuzz.onrender/signup", formData)
+            $.post("https://campusbuzz.onrender.com/signup", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#signupSuccessModal").modal("show");
@@ -626,7 +626,7 @@ function fetchPopularReviews() {
 
         // Check if user is logged in
         function checkUserLoggedIn() {
-            $.get("https://campusbuzz.onrender/check-token")
+            $.get("https://campusbuzz.onrender.com/check-token")
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                 })
@@ -650,7 +650,7 @@ function fetchPopularReviews() {
 
 // Function to fetch and display reviews based on filter
 function fetchReviews(filter) {
-    $.get(`https://campusbuzz.onrender/review/${filter}`, function(data) {
+    $.get(`https://campusbuzz.onrender.com/review/${filter}`, function(data) {
         let reviewsHTML;
         if (filter === 'all-reviews') {
             reviewsHTML = `<div class="parent-reviews"><h2>All Reviews</h2>`;
