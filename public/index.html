@@ -254,7 +254,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender/login">
+                    <form method="post" action="https://campusbuzz.onrender.com/login">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label class="form-control-placeholder" for="email">Email</label>
@@ -272,7 +272,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender/signup">
+                    <form method="post" action="https://campusbuzz.onrender.com/signup">
                         <!-- Add signup form fields here -->
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -426,7 +426,7 @@
         $("#logbutton").click(function(event) {
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
-                $.post("https://campusbuzz.onrender/logout")
+                $.post("https://campusbuzz.onrender.com/logout")
                     .done(function() {
                         $("#logbutton").text('Login').attr('data-target', '#loginModal');
                         window.location.href = '/home.html';
@@ -463,7 +463,7 @@
                 return;
             }
 
-            $.post("https://campusbuzz.onrender/signup", formData)
+            $.post("https://campusbuzz.onrender.com/signup", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#signupSuccessModal").modal("show");
@@ -488,7 +488,7 @@
 
         // Check if user is logged in
         function checkUserLoggedIn() {
-            $.get("https://campusbuzz.onrender/check-token")
+            $.get("https://campusbuzz.onrender.com/check-token")
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                 })

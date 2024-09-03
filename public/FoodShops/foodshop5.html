@@ -378,7 +378,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="https://campusbuzz.onrender/submit-reviews/5" id="review-form">
+                <form method="post" action="https://campusbuzz.onrender.com/submit-reviews/5" id="review-form">
                     <div class="form-group">
                         <label for="title">Title:</label>
                         <input type="text" class="form-control" name="title" id="title" required>
@@ -414,7 +414,7 @@
                     <div class="avatar-container">
                         <img src="../Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender/login">
+                    <form method="post" action="https://campusbuzz.onrender.com/login">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label class="form-control-placeholder" for="email">Email</label>
@@ -432,7 +432,7 @@
                     <div class="avatar-container">
                         <img src="../Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender/signup">
+                    <form method="post" action="https://campusbuzz.onrender.com/signup">
                         <!-- Add signup form fields here -->
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -616,7 +616,7 @@
                 password: $("#password").val()
             };
 
-            $.post("https://campusbuzz.onrender/login", formData)
+            $.post("https://campusbuzz.onrender.com/login", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#loginSuccessModal").modal("show");
@@ -635,7 +635,7 @@
         $("#logbutton").click(function(event) {
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
-                $.post("https://campusbuzz.onrender/logout")
+                $.post("https://campusbuzz.onrender.com/logout")
                     .done(function() {
                         $("#logbutton").text('Login').attr('data-target', '#loginModal');
                         window.location.href = '/home.html';
@@ -672,7 +672,7 @@
                 return;
             }
 
-            $.post("https://campusbuzz.onrender/signup", formData)
+            $.post("https://campusbuzz.onrender.com/signup", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#signupSuccessModal").modal("show");
@@ -697,7 +697,7 @@
 
         // Check if user is logged in
         function checkUserLoggedIn() {
-            $.get("https://campusbuzz.onrender/check-token")
+            $.get("https://campusbuzz.onrender.com/check-token")
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                 })
@@ -718,7 +718,7 @@
 <script>
     $(document).ready(function() {
         function fetchReviews() {
-            $.get('https://campusbuzz.onrender/reviews/5', function(data) {
+            $.get('https://campusbuzz.onrender.com/reviews/5', function(data) {
                 $('#reviews-container').html(data);
                 openTab(event, 'reviews');
             });
@@ -735,7 +735,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: "https://campusbuzz.onrender/submit-reviews/5",
+            url: "https://campusbuzz.onrender.com/submit-reviews/5",
             type: "POST",
             data: formData,
             success: function() {
