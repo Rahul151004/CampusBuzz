@@ -626,7 +626,7 @@ function fetchPopularReviews() {
 
         // Check if user is logged in
         function checkUserLoggedIn() {
-            $.get("https://campusbuzz.onrender/logout")
+            $.get("https://campusbuzz.onrender/check-token")
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                 })
