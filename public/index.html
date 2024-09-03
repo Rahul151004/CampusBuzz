@@ -407,7 +407,7 @@
                 password: $("#password").val()
             };
 
-            $.post("/login", formData)
+            $.post("https://campusbuzz.onrender.com/login", formData)
                 .done(function() {
                     $("#logbutton").text('Logout').removeAttr('data-target');
                     $("#loginSuccessModal").modal("show");
