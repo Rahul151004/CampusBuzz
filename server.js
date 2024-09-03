@@ -1,12 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
-const { ObjectId } = require('mongodb');
+const cookieParser = require('cookie-parser');
 const app = express();
+const bcrypt = require('bcrypt');
+const saltrounds = 12;
 const port = process.env.PORT || 3000;
 require('dotenv').config();
+
+app.use(cookieParser());
 
 // Connection URI for MongoDB
 const uri = process.env.MONGO_URI;
@@ -38,7 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware to verify JWT token
 function verifyToken(req, res, next) {
-    const token = req.headers['authorization'];
+    const token=req.cookies.token;
+    // const token = req.headers['authorization'];
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
@@ -55,18 +60,36 @@ function verifyToken(req, res, next) {
     });
 }
 
+// Route to check token validity
+app.get('/check-token', verifyToken, (req, res) => {
+    res.status(200).json({ message: 'Token is valid' });
+});
+
 // Login route with JWT generation
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     
     try {
-        const user = await usersCollection.findOne({ email, password });
-        
+        const user = await usersCollection.findOne({ email });
         if (user) {
+            const passwordMatch = await bcrypt.compare(password, user.password);
+
+            if(passwordMatch){
             // Generate JWT token
             const token = jwt.sign({ userId: user._id, email: user.email }, secretKey, { expiresIn: '2h' });
+            
+            res.cookie('token', token, {
+                httpOnly: true,       // Not accessible via JavaScript
+                secure: true,         // Set to true if using HTTPS
+                sameSite: 'Strict',   // Controls whether the cookie is sent with cross-site requests
+                maxAge: 7200000       // 1 hour in milliseconds
+            });
+            
             res.json({ token });
-        } else {
+            }else{
+                res.sendStatus(401);
+        }
+        }else{
             res.sendStatus(401); // Send unauthorized status
         }
     } catch (error) {
@@ -77,6 +100,9 @@ app.post('/login', async (req, res) => {
 
 // Logout route
 app.post('/logout', (req, res) => {
+    console.log('hello');
+    
+    res.clearCookie('token');
     // JWT is stateless, so we just return success
     res.sendStatus(200); // Send success status
 });
@@ -95,13 +121,21 @@ app.post('/signup', async (req, res) => {
         if (existingUser) {
             return res.status(409).send('Email already exists'); // Conflict status
         }
-        
+
+        const hashedPassword = await bcrypt.hash(password, 10);
         // Insert new user into the database
-        const result = await usersCollection.insertOne({ username, email, password });
+        const result = await usersCollection.insertOne({ username, email, password:hashedPassword });
         
         // Generate JWT token
         const token = jwt.sign({ userId: result.insertedId, email: email }, secretKey, { expiresIn: '2h' });
         
+        res.cookie('token', token, {
+            httpOnly: true,       // Not accessible via JavaScript
+            secure: true,         // Set to true if using HTTPS
+            sameSite: 'Strict',   // Controls whether the cookie is sent with cross-site requests
+            maxAge: 7200000       // 2 hours in milliseconds
+        });
+
         res.json({ token }); // Return the token
     } catch (error) {
         console.error('Error during signup:', error);
