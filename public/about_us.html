@@ -722,6 +722,10 @@
                 url: "https://campusbuzz.onrender.com/contact",
                 type: "POST",
                 data:formData,
+                xhrFields: {
+                    withCredentials: true // Ensure cookies are sent with the request
+                },
+                crossDomain: true,
                 success: function(){
                     // Show success modal
                     $("#contactSuccessModal").modal("show");

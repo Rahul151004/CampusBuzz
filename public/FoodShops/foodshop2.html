@@ -767,6 +767,10 @@
             url: "https://campusbuzz.onrender.com/submit-reviews/2",
             type: "POST",
             data: formData,
+            xhrFields:{
+            withCredentials: true
+            },
+            crossDomain: true,
             success: function() {
                 $("#reviewSuccessModal").modal("show");
                 setTimeout(() => {
