@@ -678,20 +678,28 @@
         var formData = $(this).serialize();
     
         // Send POST request to submit review
-        $.post("https://campusbuzz.onrender.com/submit-reviews", formData)
-            .done(function() {
+        $.ajax({
+            url: "https://campusbuzz.onrender.com/submit-reviews",
+            type: "POST",
+            data: formData,
+            xhrFields:{
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function() {
                 // Show review success modal
                 $("#reviewSuccessModal").modal("show");
                 setTimeout(function(){
                     $("#reviewSuccessModal").modal("hide");
                     $("#reviewModal").modal("hide");
                     document.getElementById("review-form").reset();
-                },4000);
-            })
-            .fail(function() {
+                    },4000);
+                },
+            error: function() {
                 // Show review error modal
                 $("#reviewErrorModal").modal("show");
-            });
+            }
+        });
     });
 </script>
     
