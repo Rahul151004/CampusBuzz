@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const app = express();
 const bcrypt = require('bcrypt');
-const saltrounds = process.env.saltRounds;
+const saltrounds = 12;
 const port = process.env.PORT;
 const cors = require('cors');
 
