@@ -19,8 +19,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 // List of allowed origins
 const allowedOrigins = [
-    "https://campusbuzzlpu.netlifyapp",
     "https://campusbuzz.onrender.com",
+    "https://campusbuzzlpu.netlifyapp",
     "https://localhost:3000"
 ];
 
