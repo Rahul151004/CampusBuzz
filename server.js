@@ -18,7 +18,11 @@ const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // List of allowed origins
-const allowedOrigins = process.env.allowedOrigins;
+const allowedOrigins = [
+    "https://campusbuzzlpu.netlifyapp",
+    "https://campusbuzz.onrender.com",
+    "https://localhost:3000"
+];
 
 
 // JWT Secret Key
