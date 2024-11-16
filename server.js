@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const app = express();
 const bcrypt = require('bcrypt');
-const saltrounds = 12;
-const port = process.env.PORT || 3000;
+const saltrounds = process.env.saltRounds;
+const port = process.env.PORT;
 const cors = require('cors');
 require('dotenv').config();
 
@@ -18,14 +18,11 @@ const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // List of allowed origins
-const allowedOrigins = [
-    'https://campusbuzzlpu.netlify.app',
-    'https://campusbuzz.onrender.com'
-  ];
+const allowedOrigins = process.env.allowedOrigins;
 
 
 // JWT Secret Key
-const secretKey = process.env.JWT_SECRET || 'your_jwt_secret_key';
+const secretKey = process.env.JWT_SECRET;
 
 // Connect to MongoDB
 client.connect(err => {
@@ -142,7 +139,7 @@ app.post('/signup', async (req, res) => {
             return res.status(409).send('Email already exists'); // Conflict status
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, saltrounds);
         // Insert new user into the database
         const result = await usersCollection.insertOne({ username, email, password:hashedPassword });
         
