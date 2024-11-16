@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -9,7 +10,6 @@ const bcrypt = require('bcrypt');
 const saltrounds = process.env.saltRounds;
 const port = process.env.PORT;
 const cors = require('cors');
-require('dotenv').config();
 
 app.use(cookieParser());
 
