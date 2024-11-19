@@ -5,4 +5,4 @@ test_old_server.js
 test.js
 netlify.toml
 .env
-netlify
+netlify\functions\*
