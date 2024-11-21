@@ -41,6 +41,7 @@ client.connect(err => {
 app.use(cors({
     origin: (origin, callback) => {
       // Check if the incoming request's origin is in the list of allowed origins
+      console.log(origin);
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
       } else {
