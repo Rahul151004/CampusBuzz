@@ -26,9 +26,12 @@ pipeline {
     stage('Start Server Temporarily') {
       steps {
         bat '''
-        start /B node server.js
-        timeout /T 30
-        taskkill /F /IM node.exe
+        @echo off
+        echo Starting server.js in background...
+        start "" /B cmd /c "node server.js > server-log.txt 2>&1"
+        timeout /T 30 /NOBREAK
+        echo Killing Node process...
+        taskkill /F /IM node.exe > nul 2>&1
       '''
       }
     }
