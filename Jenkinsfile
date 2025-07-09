@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    // Set the NodeJS version (must be defined in Jenkins global config)
-    NODEJS_HOME = tool name: 'node16', type: 'NodeJSInstallation'
+    // Update this to match the name in Jenkins Global Tools config
+    NODEJS_HOME = tool name: 'node20', type: 'NodeJSInstallation'
     PATH = "${NODEJS_HOME}/bin:${env.PATH}"
   }
 
@@ -41,7 +41,6 @@ pipeline {
     stage('Lint/Test Backend') {
       steps {
         dir('server') {
-          // Replace this with your backend test command if defined
           bat 'echo "No tests defined yet"'
         }
       }
