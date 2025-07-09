@@ -27,10 +27,13 @@ pipeline {
       steps {
         bat '''
         @echo off
-        echo Starting server.js in background...
-        start "" /B cmd /c "node server.js > server-log.txt 2>&1"
-        timeout /T 30 /NOBREAK
-        echo Killing Node process...
+        echo Starting node server in background...
+        start "" cmd /c "node server.js > server-log.txt 2>&1"
+        
+        REM Wait for ~30 seconds (30 pings = ~30s)
+        ping -n 30 127.0.0.1 > nul
+
+        echo Killing Node processes...
         taskkill /F /IM node.exe > nul 2>&1
       '''
       }
