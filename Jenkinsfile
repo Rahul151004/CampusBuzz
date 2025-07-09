@@ -25,7 +25,7 @@ pipeline {
 
     stage('Start Server') {
       steps {
-        bat 'node server.js'
+        bat 'node server.js & timeout /t 10'
       }
     }
 
