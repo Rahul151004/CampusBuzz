@@ -5,6 +5,10 @@ pipeline {
     nodejs 'node20'
   }
 
+  environment {
+    MONGO_URI = credentials('mongo-url') 
+  }
+
   stages {
     stage('Clone Repo') {
       steps {
