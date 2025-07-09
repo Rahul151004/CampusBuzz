@@ -2,51 +2,31 @@ pipeline {
   agent any
 
   tools {
-    nodejs 'node20' // Must match the name configured in Jenkins global tools
+    nodejs 'node20'
   }
 
   stages {
-    stage('Clone') {
+    stage('Clone Repo') {
       steps {
         git url: 'https://github.com/Rahul151004/CampusBuzz.git'
       }
     }
 
-    stage('Install Frontend') {
+    stage('Install Dependencies') {
       steps {
-        dir('client') {
-          bat 'npm install'
-        }
+        bat 'npm install'
       }
     }
 
-    stage('Build Frontend') {
+    stage('Start Server') {
       steps {
-        dir('client') {
-          bat 'npm run build'
-        }
+        bat 'node server.js'
       }
     }
 
-    stage('Install Backend') {
+    stage('Archive Frontend (Optional)') {
       steps {
-        dir('server') {
-          bat 'npm install'
-        }
-      }
-    }
-
-    stage('Lint/Test Backend') {
-      steps {
-        dir('server') {
-          bat 'echo "No tests defined yet"'
-        }
-      }
-    }
-
-    stage('Archive Frontend Build') {
-      steps {
-        archiveArtifacts artifacts: 'client/build/**', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'public/**', allowEmptyArchive: true
       }
     }
   }
