@@ -7,6 +7,7 @@ pipeline {
 
   environment {
     MONGO_URI = credentials('mongo-url') 
+    JWT_SECRET = credentials('jwt-secret-id')
   }
 
   stages {
