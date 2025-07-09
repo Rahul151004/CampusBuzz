@@ -23,9 +23,13 @@ pipeline {
       }
     }
 
-    stage('Start Server') {
+    stage('Start Server Temporarily') {
       steps {
-        bat 'node server.js & timeout /t 10'
+        bat '''
+        start /B node server.js
+        timeout /T 30
+        taskkill /F /IM node.exe
+      '''
       }
     }
 
