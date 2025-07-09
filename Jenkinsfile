@@ -1,10 +1,8 @@
 pipeline {
   agent any
 
-  environment {
-    // Update this to match the name in Jenkins Global Tools config
-    NODEJS_HOME = tool name: 'node20', type: 'NodeJSInstallation'
-    PATH = "${NODEJS_HOME}/bin:${env.PATH}"
+  tools {
+    nodejs 'node20' // Must match the name configured in Jenkins global tools
   }
 
   stages {
