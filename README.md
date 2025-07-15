@@ -12,7 +12,7 @@ CampusBuzz is a comprehensive web platform designed to address the challenge of 
 - Stay up-to-date with the latest buzz and trending locations.
 
 ### How to Use
-Simply visit [CampusBuzz](https://campusbuzzlpu.netlify.app) to start exploring and discovering the best spots on LPU's campus!
+Simply visit [CampusBuzz](https://campusbuzz.onrender.com) to start exploring and discovering the best spots on LPU's campus!
 
 ### Feedback and Contributions
 We welcome feedback and contributions from the community to help improve and enhance the CampusBuzz experience. If you have any suggestions, feature requests, or bug reports, feel free to [open an issue](https://github.com/Rahul15102004/CampusBuzz/issues) or [submit a pull request](https://github.com/Rahul15102004/CampusBuzz/pulls).
