@@ -6,3 +6,8 @@ test.js
 netlify.toml
 .env
 netlify/functions/
+
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
