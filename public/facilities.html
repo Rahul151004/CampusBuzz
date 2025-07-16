@@ -111,7 +111,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="http://localhost:3000/login">
+                    <form method="post" action="/login">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label class="form-control-placeholder" for="email">Email</label>
@@ -129,7 +129,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="http://localhost:3000/signup">
+                    <form method="post" action="/signup">
                         <!-- Add signup form fields here -->
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -265,7 +265,7 @@
             };
 
             $.ajax({
-                url: "http://localhost:3000/login",
+                url: "/login",
                 type: "POST",
                 data: formData,
                 xhrFields: {
@@ -294,7 +294,7 @@
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
                 $.ajax({
-                    url: "http://localhost:3000/logout",
+                    url: "/logout",
                     type: "POST",
                     xhrFields: {
                         withCredentials: true // Ensure cookies are sent with the request
@@ -338,7 +338,7 @@
             }
 
             $.ajax({
-                url: "http://localhost:3000/signup",
+                url: "/signup",
                 type: "POST",
                 data: formData,
                 xhrFields: {
@@ -371,7 +371,7 @@
         // Check if user is logged in
         function checkUserLoggedIn() {
             $.ajax({
-                url: "http://localhost:3000/check-token",
+                url: "/check-token",
                 type: "GET",
                 xhrFields: {
                     withCredentials: true // Ensure cookies are sent with the request
