@@ -119,7 +119,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="https://campusbuzz.onrender.com/submit-reviews/21" id="review-form">
+                <form method="post" action="http://localhost:3000/submit-reviews/21" id="review-form">
                     <div class="form-group">
                         <label for="title">Title:</label>
                         <input type="text" class="form-control" name="title" id="title" required>
@@ -155,7 +155,7 @@
                     <div class="avatar-container">
                         <img src="../Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender.com/login">
+                    <form method="post" action="http://localhost:3000/login">
                         <div class="form-group">
                             <input type="email" class="form-control" id="email" name="email" required>
                             <label class="form-control-placeholder" for="email">Email</label>
@@ -173,7 +173,7 @@
                     <div class="avatar-container">
                         <img src="../Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender.com/signup">
+                    <form method="post" action="http://localhost:3000/signup">
                         <!-- Add signup form fields here -->
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -359,7 +359,7 @@
             };
 
             $.ajax({
-                url: "https://campusbuzz.onrender.com/login",
+                url: "http://localhost:3000/login",
                 type: "POST",
                 data: formData,
                 xhrFields: {
@@ -388,7 +388,7 @@
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
                 $.ajax({
-                    url: "https://campusbuzz.onrender.com/logout",
+                    url: "http://localhost:3000/logout",
                     type: "POST",
                     xhrFields: {
                         withCredentials: true // Ensure cookies are sent with the request
@@ -432,7 +432,7 @@
             }
 
             $.ajax({
-                url: "https://campusbuzz.onrender.com/signup",
+                url: "http://localhost:3000/signup",
                 type: "POST",
                 data: formData,
                 xhrFields: {
@@ -465,7 +465,7 @@
         // Check if user is logged in
         function checkUserLoggedIn() {
             $.ajax({
-                url: "https://campusbuzz.onrender.com/check-token",
+                url: "http://localhost:3000/check-token",
                 type: "GET",
                 xhrFields: {
                     withCredentials: true // Ensure cookies are sent with the request
@@ -492,7 +492,7 @@
 <script>
     $(document).ready(function() {
         function fetchReviews() {
-            $.get('https://campusbuzz.onrender.com/reviews/21', function(data) {
+            $.get('http://localhost:3000/reviews/21', function(data) {
                 $('#reviews-container').html(data);
                 openTab(event, 'reviews');
             });
@@ -509,7 +509,7 @@
         var formData = $(this).serialize();
 
         $.ajax({
-            url: "https://campusbuzz.onrender.com/submit-reviews/21",
+            url: "http://localhost:3000/submit-reviews/21",
             type: "POST",
             data: formData,
             xhrFields:{

@@ -145,7 +145,7 @@
                     <div class="avatar-container">
                         <img src="Images/img_avatar2.png" alt="Avatar">
                     </div>
-                    <form method="post" action="https://campusbuzz.onrender.com/signup">
+                    <form method="post" action="http://localhost:3000/signup">
                         <!-- Add signup form fields here -->
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -265,7 +265,7 @@
     });
     // Function to fetch and display popular reviews
 function fetchPopularReviews() {
-    $.get('https://campusbuzz.onrender.com/popular-reviews', function(data) {
+    $.get('http://localhost:3000/popular-reviews', function(data) {
         data.forEach(review => {
             const reviewHTML = `
                 <div class="review-container">
@@ -329,7 +329,7 @@ function fetchPopularReviews() {
             };
 
             $.ajax({
-                url: "https://campusbuzz.onrender.com/login",
+                url: "http://localhost:3000/login",
                 type: "POST",
                 data: formData,
                 xhrFields: {
@@ -358,7 +358,7 @@ function fetchPopularReviews() {
             if ($(this).text() === 'Logout') {
                 event.preventDefault();
                 $.ajax({
-                    url: "https://campusbuzz.onrender.com/logout",
+                    url: "http://localhost:3000/logout",
                     type: "POST",
                     xhrFields: {
                         withCredentials: true // Ensure cookies are sent with the request
@@ -402,7 +402,7 @@ function fetchPopularReviews() {
             }
 
             $.ajax({
-                url: "https://campusbuzz.onrender.com/signup",
+                url: "http://localhost:3000/signup",
                 type: "POST",
                 data: formData,
                 xhrFields: {
@@ -435,7 +435,7 @@ function fetchPopularReviews() {
         // Check if user is logged in
         function checkUserLoggedIn() {
             $.ajax({
-                url: "https://campusbuzz.onrender.com/check-token",
+                url: "http://localhost:3000/check-token",
                 type: "GET",
                 xhrFields: {
                     withCredentials: true // Ensure cookies are sent with the request
