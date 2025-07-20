@@ -1,49 +1,52 @@
 pipeline {
   agent any
 
-  tools {
-    nodejs 'node20'
-  }
-
   environment {
     MONGO_URI = credentials('mongo-url') 
     JWT_SECRET = credentials('jwt-secret-id')
+    IMAGE_NAME = 'campusbuzz-app'
+    CONTAINER_NAME = 'campusbuzz'
+    PORT = '3000'
   }
 
   stages {
     stage('Clone Repo') {
       steps {
-        git url: 'https://github.com/Rahul151004/CampusBuzz.git'
+        git branch: 'aws-deployment', url: 'https://github.com/Rahul151004/CampusBuzz.git'
       }
     }
 
-    stage('Install Dependencies') {
+    stage('Build Docker Image') {
       steps {
-        bat 'npm install'
+        sh 'docker build -t $IMAGE_NAME .'
       }
     }
 
-    stage('Start Server Temporarily') {
+    stage('Run Container') {
       steps {
-        bat '''
-        @echo off
-        echo Starting node server in background...
-        start "" cmd /c "node server.js > server-log.txt 2>&1"
-        
-        REM Wait for ~30 seconds (30 pings = ~30s)
-        ping -n 30 127.0.0.1 > nul
+        sh '''
+          echo Stopping any existing container...
+          docker stop $CONTAINER_NAME || true
+          docker rm $CONTAINER_NAME || true
 
-        echo Killing Node processes...
-        taskkill /F /IM node.exe > nul 2>&1
-      '''
-      }
-    }
-
-    stage('Archive Frontend (Optional)') {
-      steps {
-        archiveArtifacts artifacts: 'public/**', allowEmptyArchive: true
+          echo Running new container...
+          docker run -d \
+            --name $CONTAINER_NAME \
+            -p $PORT:$PORT \
+            -e MONGO_URI=$MONGO_URI \
+            -e JWT_SECRET=$JWT_SECRET \
+            $IMAGE_NAME
+        '''
       }
     }
   }
-}
 
+  post {
+    success {
+      echo "✅ CampusBuzz deployed successfully to port $PORT!"
+    }
+    failure {
+      echo "❌ Build or deployment failed."
+    }
+  }
+}
