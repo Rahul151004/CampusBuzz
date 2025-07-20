@@ -3,7 +3,7 @@
 Welcome to CampusBuzz - your go-to destination for discovering hidden gems and hotspots on LPU's campus! 🎓✨
 
 ### About
-CampusBuzz is a comprehensive web platform designed to address the challenge of navigating and discovering essential facilities and recreational venues within Lovely Professional University's campus. Our mission is to empower students and campus enthusiasts with the knowledge and accessibility to uncover hidden campus treasures, ranging from quaint eateries to serene study spots and vibrant hangouts.
+CampusBuzz is a comprehensive web platform designed to address the challenge of navigating and discovering essential facilities and recreational venues within Lovely Professional University's campus. Our mission is to empower students and campus enthusiasts with the knowledge and accessibility to uncover hidden campus treasures, ranging from quaint eateries to serene study spots and vibrant hangouts. 
 
 ### Features
 - Explore a curated list of campus amenities and facilities.
