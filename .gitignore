@@ -11,3 +11,6 @@ netlify/functions/
 *.tfstate.*
 .terraform/
 terraform.tfvars
+
+deployment.yaml
+service.yaml
