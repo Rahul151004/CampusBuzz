@@ -10,16 +10,16 @@ pipeline {
   }
 
   stages {
-    stage('Clone Repo') {
-      steps {
-        git url: 'https://github.com/Rahul151004/CampusBuzz.git'
-      }
-    }
+    // stage('Clone Repo') {
+    //   steps {
+    //     git url: 'https://github.com/Rahul151004/CampusBuzz.git'
+    //   }
+    // }
 
     stage('Build and Push Docker Image') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          bat '''
+          bat """
             echo Logging into Docker Hub...
             echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
 
@@ -31,7 +31,7 @@ pipeline {
 
             echo Logging out...
             docker logout
-          '''
+          """
         }
       }
     }
