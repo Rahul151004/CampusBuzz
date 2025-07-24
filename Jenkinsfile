@@ -4,7 +4,7 @@ pipeline {
   environment {
     MONGO_URI = credentials('mongo-url') 
     JWT_SECRET = credentials('jwt-secret-id')
-    IMAGE_NAME = 'campusbuzz-app'
+    IMAGE_NAME = 'rbhat04/campusbuzz-app:latest'
     CONTAINER_NAME = 'campusbuzz'
     PORT = '3000'
   }
@@ -18,7 +18,17 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build -t $IMAGE_NAME .'
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh '''
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+            docker build -t $IMAGE_NAME .
+
+            docker push $IMAGE_NAME
+
+            docker logout
+          '''
+        }
       }
     }
 
