@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('Clone Repo') {
       steps {
-        git branch: 'aws-deployment', url: 'https://github.com/Rahul151004/CampusBuzz.git'
+        git url: 'https://github.com/Rahul151004/CampusBuzz.git'
       }
     }
 
