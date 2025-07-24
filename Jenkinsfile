@@ -42,13 +42,13 @@ pipeline {
           echo Stopping any existing container...
           docker stop %CONTAINER_NAME%
           docker rm %CONTAINER_NAME%
-
+    
           echo Running new container...
           docker run -d ^
             --name %CONTAINER_NAME% ^
             -p %PORT%:%PORT% ^
-            -e MONGO_URI=%MONGO_URI% ^
-            -e JWT_SECRET=%JWT_SECRET% ^
+            -e "MONGO_URI=%MONGO_URI%" ^
+            -e "JWT_SECRET=%JWT_SECRET%" ^
             %IMAGE_NAME%
         '''
       }
