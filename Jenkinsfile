@@ -10,11 +10,11 @@ pipeline {
   }
 
   stages {
-    stage('Clone Repo') {
-      steps {
-        git url: 'https://github.com/Rahul151004/CampusBuzz.git'
-      }
-    }
+    // stage('Clone Repo') {
+    //   steps {
+    //     git url: 'https://github.com/Rahul151004/CampusBuzz.git'
+    //   }
+    // }
 
     stage('Build and Push Docker Image') {
       steps {
