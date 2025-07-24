@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: campusbuzz-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: campusbuzz-app
+  template:
+    metadata:
+      labels:
+        app: campusbuzz-app
+    spec:
+      containers:
+        - name: campusbuzz-app
+          image: rbhat04/campusbuzz-app:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: campusbuzz-config

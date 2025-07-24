@@ -12,5 +12,4 @@ netlify/functions/
 .terraform/
 terraform.tfvars
 
-deployment.yaml
-service.yaml
+configmap.yaml
