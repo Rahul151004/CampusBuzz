@@ -16,16 +16,20 @@ pipeline {
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Build and Push Docker Image') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh '''
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          bat '''
+            echo Logging into Docker Hub...
+            echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
 
-            docker build -t $IMAGE_NAME .
+            echo Building Docker image...
+            docker build -t %IMAGE_NAME% .
 
-            docker push $IMAGE_NAME
+            echo Pushing image to Docker Hub...
+            docker push %IMAGE_NAME%
 
+            echo Logging out...
             docker logout
           '''
         }
@@ -34,18 +38,18 @@ pipeline {
 
     stage('Run Container') {
       steps {
-        sh '''
+        bat '''
           echo Stopping any existing container...
-          docker stop $CONTAINER_NAME || true
-          docker rm $CONTAINER_NAME || true
+          docker stop %CONTAINER_NAME%
+          docker rm %CONTAINER_NAME%
 
           echo Running new container...
-          docker run -d \
-            --name $CONTAINER_NAME \
-            -p $PORT:$PORT \
-            -e MONGO_URI=$MONGO_URI \
-            -e JWT_SECRET=$JWT_SECRET \
-            $IMAGE_NAME
+          docker run -d ^
+            --name %CONTAINER_NAME% ^
+            -p %PORT%:%PORT% ^
+            -e MONGO_URI=%MONGO_URI% ^
+            -e JWT_SECRET=%JWT_SECRET% ^
+            %IMAGE_NAME%
         '''
       }
     }
@@ -53,7 +57,7 @@ pipeline {
 
   post {
     success {
-      echo "✅ CampusBuzz deployed successfully to port $PORT!"
+      echo "✅ CampusBuzz deployed successfully to port %PORT%!"
     }
     failure {
       echo "❌ Build or deployment failed."
