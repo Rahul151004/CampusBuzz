@@ -105,7 +105,7 @@ app.post('/login', async (req, res) => {
             res.cookie('token', token, {
                 httpOnly: true,       // Not accessible via JavaScript
                 secure: false,         // Set to true if using HTTPS
-                sameSite: 'None',   // Controls whether the cookie is sent with cross-site requests
+                sameSite: 'lax',   // Controls whether the cookie is sent with cross-site requests
                 maxAge: 7200000       // 1 hour in milliseconds
             });
             
